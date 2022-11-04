@@ -11,6 +11,12 @@
 		DA50B7F62913CABB00FA58E4 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA50B7F52913CABB00FA58E4 /* ContentView.swift */; };
 		DA50B7F82913CABC00FA58E4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DA50B7F72913CABC00FA58E4 /* Assets.xcassets */; };
 		DA50B7FB2913CABC00FA58E4 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DA50B7FA2913CABC00FA58E4 /* Preview Assets.xcassets */; };
+		DA50B8032913CB0A00FA58E4 /* ChessView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA50B8022913CB0A00FA58E4 /* ChessView.swift */; };
+		DA50B8052913CF1200FA58E4 /* BoardState.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA50B8042913CF1200FA58E4 /* BoardState.swift */; };
+		DA50B8072913CF8E00FA58E4 /* Piece.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA50B8062913CF8E00FA58E4 /* Piece.swift */; };
+		DA50B80B2913D82100FA58E4 /* PieceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA50B80A2913D82100FA58E4 /* PieceView.swift */; };
+		DA50B81129150D2900FA58E4 /* +View.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA50B81029150D2900FA58E4 /* +View.swift */; };
+		DA50B81329151B3C00FA58E4 /* ChessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA50B81229151B3C00FA58E4 /* ChessViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,6 +26,13 @@
 		DA50B7F72913CABC00FA58E4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DA50B7FA2913CABC00FA58E4 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		DA50B7FC2913CABC00FA58E4 /* ChessFrontend.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ChessFrontend.entitlements; sourceTree = "<group>"; };
+		DA50B8022913CB0A00FA58E4 /* ChessView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChessView.swift; sourceTree = "<group>"; };
+		DA50B8042913CF1200FA58E4 /* BoardState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardState.swift; sourceTree = "<group>"; };
+		DA50B8062913CF8E00FA58E4 /* Piece.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Piece.swift; sourceTree = "<group>"; };
+		DA50B80A2913D82100FA58E4 /* PieceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieceView.swift; sourceTree = "<group>"; };
+		DA50B80C2914FDA400FA58E4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		DA50B81029150D2900FA58E4 /* +View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "+View.swift"; sourceTree = "<group>"; };
+		DA50B81229151B3C00FA58E4 /* ChessViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChessViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,9 +65,13 @@
 		DA50B7F22913CABB00FA58E4 /* ChessFrontend */ = {
 			isa = PBXGroup;
 			children = (
+				DA50B80F29150D1B00FA58E4 /* Extensions */,
+				DA50B8092913D81000FA58E4 /* Board */,
+				DA50B8082913CF9800FA58E4 /* ChessModels */,
 				DA50B7F32913CABB00FA58E4 /* ChessFrontendApp.swift */,
 				DA50B7F52913CABB00FA58E4 /* ContentView.swift */,
 				DA50B7F72913CABC00FA58E4 /* Assets.xcassets */,
+				DA50B80C2914FDA400FA58E4 /* Info.plist */,
 				DA50B7FC2913CABC00FA58E4 /* ChessFrontend.entitlements */,
 				DA50B7F92913CABC00FA58E4 /* Preview Content */,
 			);
@@ -67,6 +84,33 @@
 				DA50B7FA2913CABC00FA58E4 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		DA50B8082913CF9800FA58E4 /* ChessModels */ = {
+			isa = PBXGroup;
+			children = (
+				DA50B8042913CF1200FA58E4 /* BoardState.swift */,
+				DA50B8062913CF8E00FA58E4 /* Piece.swift */,
+			);
+			path = ChessModels;
+			sourceTree = "<group>";
+		};
+		DA50B8092913D81000FA58E4 /* Board */ = {
+			isa = PBXGroup;
+			children = (
+				DA50B8022913CB0A00FA58E4 /* ChessView.swift */,
+				DA50B80A2913D82100FA58E4 /* PieceView.swift */,
+				DA50B81229151B3C00FA58E4 /* ChessViewController.swift */,
+			);
+			path = Board;
+			sourceTree = "<group>";
+		};
+		DA50B80F29150D1B00FA58E4 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				DA50B81029150D2900FA58E4 /* +View.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -139,8 +183,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DA50B8072913CF8E00FA58E4 /* Piece.swift in Sources */,
+				DA50B81329151B3C00FA58E4 /* ChessViewController.swift in Sources */,
+				DA50B8052913CF1200FA58E4 /* BoardState.swift in Sources */,
 				DA50B7F62913CABB00FA58E4 /* ContentView.swift in Sources */,
+				DA50B81129150D2900FA58E4 /* +View.swift in Sources */,
 				DA50B7F42913CABB00FA58E4 /* ChessFrontendApp.swift in Sources */,
+				DA50B80B2913D82100FA58E4 /* PieceView.swift in Sources */,
+				DA50B8032913CB0A00FA58E4 /* ChessView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -274,6 +324,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ChessFrontend/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -301,6 +352,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ChessFrontend/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

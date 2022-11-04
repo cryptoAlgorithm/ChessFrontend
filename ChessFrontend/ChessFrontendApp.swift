@@ -9,9 +9,13 @@ import SwiftUI
 
 @main
 struct ChessFrontendApp: App {
+    @StateObject private var board = BoardState()
+
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(board)
+                .onAppear { board.resetBoard() }
         }
     }
 }
