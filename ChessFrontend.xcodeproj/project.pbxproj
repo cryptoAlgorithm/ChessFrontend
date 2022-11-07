@@ -15,8 +15,12 @@
 		DA50B8052913CF1200FA58E4 /* BoardState.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA50B8042913CF1200FA58E4 /* BoardState.swift */; };
 		DA50B8072913CF8E00FA58E4 /* Piece.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA50B8062913CF8E00FA58E4 /* Piece.swift */; };
 		DA50B80B2913D82100FA58E4 /* PieceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA50B80A2913D82100FA58E4 /* PieceView.swift */; };
-		DA50B81129150D2900FA58E4 /* +View.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA50B81029150D2900FA58E4 /* +View.swift */; };
+		DA50B81129150D2900FA58E4 /* View+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA50B81029150D2900FA58E4 /* View+.swift */; };
 		DA50B81329151B3C00FA58E4 /* ChessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA50B81229151B3C00FA58E4 /* ChessViewController.swift */; };
+		DA50B8152915325800FA58E4 /* stockfish in Resources */ = {isa = PBXBuildFile; fileRef = DA50B8142915325800FA58E4 /* stockfish */; };
+		DA50B81729154EB900FA58E4 /* StockfishHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA50B81629154EB900FA58E4 /* StockfishHandler.swift */; };
+		DA50B81C291625A400FA58E4 /* SFNotificationNames.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA50B81B291625A400FA58E4 /* SFNotificationNames.swift */; };
+		DA50B81E2917895700FA58E4 /* FromStockfishPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA50B81D2917895700FA58E4 /* FromStockfishPayload.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,8 +35,12 @@
 		DA50B8062913CF8E00FA58E4 /* Piece.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Piece.swift; sourceTree = "<group>"; };
 		DA50B80A2913D82100FA58E4 /* PieceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieceView.swift; sourceTree = "<group>"; };
 		DA50B80C2914FDA400FA58E4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		DA50B81029150D2900FA58E4 /* +View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "+View.swift"; sourceTree = "<group>"; };
+		DA50B81029150D2900FA58E4 /* View+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+.swift"; sourceTree = "<group>"; };
 		DA50B81229151B3C00FA58E4 /* ChessViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChessViewController.swift; sourceTree = "<group>"; };
+		DA50B8142915325800FA58E4 /* stockfish */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = stockfish; sourceTree = "<group>"; };
+		DA50B81629154EB900FA58E4 /* StockfishHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockfishHandler.swift; sourceTree = "<group>"; };
+		DA50B81B291625A400FA58E4 /* SFNotificationNames.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SFNotificationNames.swift; sourceTree = "<group>"; };
+		DA50B81D2917895700FA58E4 /* FromStockfishPayload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FromStockfishPayload.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -49,6 +57,7 @@
 		DA50B7E72913CABB00FA58E4 = {
 			isa = PBXGroup;
 			children = (
+				DA50B8142915325800FA58E4 /* stockfish */,
 				DA50B7F22913CABB00FA58E4 /* ChessFrontend */,
 				DA50B7F12913CABB00FA58E4 /* Products */,
 			);
@@ -65,6 +74,7 @@
 		DA50B7F22913CABB00FA58E4 /* ChessFrontend */ = {
 			isa = PBXGroup;
 			children = (
+				DA50B81A2916258D00FA58E4 /* Stockfish */,
 				DA50B80F29150D1B00FA58E4 /* Extensions */,
 				DA50B8092913D81000FA58E4 /* Board */,
 				DA50B8082913CF9800FA58E4 /* ChessModels */,
@@ -108,9 +118,19 @@
 		DA50B80F29150D1B00FA58E4 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				DA50B81029150D2900FA58E4 /* +View.swift */,
+				DA50B81029150D2900FA58E4 /* View+.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		DA50B81A2916258D00FA58E4 /* Stockfish */ = {
+			isa = PBXGroup;
+			children = (
+				DA50B81629154EB900FA58E4 /* StockfishHandler.swift */,
+				DA50B81B291625A400FA58E4 /* SFNotificationNames.swift */,
+				DA50B81D2917895700FA58E4 /* FromStockfishPayload.swift */,
+			);
+			path = Stockfish;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -172,6 +192,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DA50B7FB2913CABC00FA58E4 /* Preview Assets.xcassets in Resources */,
+				DA50B8152915325800FA58E4 /* stockfish in Resources */,
 				DA50B7F82913CABC00FA58E4 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -187,9 +208,12 @@
 				DA50B81329151B3C00FA58E4 /* ChessViewController.swift in Sources */,
 				DA50B8052913CF1200FA58E4 /* BoardState.swift in Sources */,
 				DA50B7F62913CABB00FA58E4 /* ContentView.swift in Sources */,
-				DA50B81129150D2900FA58E4 /* +View.swift in Sources */,
+				DA50B81129150D2900FA58E4 /* View+.swift in Sources */,
+				DA50B81729154EB900FA58E4 /* StockfishHandler.swift in Sources */,
 				DA50B7F42913CABB00FA58E4 /* ChessFrontendApp.swift in Sources */,
+				DA50B81C291625A400FA58E4 /* SFNotificationNames.swift in Sources */,
 				DA50B80B2913D82100FA58E4 /* PieceView.swift in Sources */,
+				DA50B81E2917895700FA58E4 /* FromStockfishPayload.swift in Sources */,
 				DA50B8032913CB0A00FA58E4 /* ChessView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -25,13 +25,14 @@ struct ChessView: View {
                     draggingIdx = idx
                 } dropped: {
                     guard let draggingIdx = draggingIdx else { return false }
+                    guard idx != draggingIdx else { return false }
                     withAnimation {
                         if piece.type != .empty {
-                            board.boardState[idx] = Piece()
+                            //board.boardState[idx] = Piece()
                         }
-                        board.boardState.swapAt(draggingIdx, idx)
+                        board.boardState[idx] = board.boardState[draggingIdx]
+                        board.boardState[draggingIdx] = Piece()
                     }
-                    
                     return true
                 }
             }

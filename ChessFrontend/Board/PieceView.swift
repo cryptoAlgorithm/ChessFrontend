@@ -18,36 +18,34 @@ struct PieceView: View {
     /// UTI of a chess piece used for drag and drop
     private static let pieceUT = "com.cryptoalgo.chessPiece"
 
-    var body: some View {
-        Button {
-            
-        } label: {
-            Rectangle()
-                .fill(bgAccented ? Color.accentColor : .gray)
-                .overlay {
-                    if item.type != .empty, let side = item.side {
-                        Image("Pieces/\(side.rawValue)/\(item.type)").resizable().scaledToFit()
-                    } else { EmptyView() }
-                }
-                .overlay {
-                    if dragOver {
-                        Rectangle().strokeBorder(.blue, lineWidth: 4)
-                    } else { EmptyView() }
-                }
-                .aspectRatio(1, contentMode: .fit)
-                .onDrag(if: item.type != .empty) {
-                    dragged()
-                    return NSItemProvider(
-                        item: NSString(utf8String: item.type.rawValue),
-                        typeIdentifier: Self.pieceUT
-                    )
-                }
-                .onDrop(of: [Self.pieceUT], isTargeted: $dragOver, perform: { providers in
-                    dropped()
-                })
-                //.onDrop(of: [Self.pieceUT], delegate: self)
+    var itemImage: some View {
+        Group {
+            if item.type != .empty, let side = item.side {
+                Image("Pieces/\(side.rawValue)/\(item.type)").resizable().scaledToFit()
+            } else { EmptyView() }
         }
-        .buttonStyle(.plain)
+    }
+
+    var body: some View {
+        Rectangle()
+            .fill(bgAccented ? Color.accentColor : .gray)
+            .overlay { itemImage }
+            .overlay {
+                if dragOver {
+                    Rectangle().strokeBorder(.blue, lineWidth: 4)
+                } else { EmptyView() }
+            }
+            .aspectRatio(1, contentMode: .fit)
+            .onDrag(if: item.type != .empty) {
+                dragged()
+                return NSItemProvider(
+                    item: NSString(utf8String: item.type.rawValue),
+                    typeIdentifier: Self.pieceUT
+                )
+            } preview: { itemImage }
+            .onDrop(of: [Self.pieceUT], isTargeted: $dragOver, perform: { providers in
+                dropped()
+            })
     }
 }
 
