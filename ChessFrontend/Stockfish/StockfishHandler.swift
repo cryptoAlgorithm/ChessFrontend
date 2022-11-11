@@ -8,7 +8,7 @@
 import Foundation
 
 /// Facilitates various interactions with the Stockfish chess engine
-class StockfishHandler {
+final class StockfishHandler {
     fileprivate let proc = Process()
     fileprivate let inPipe = Pipe()
     fileprivate let outPipe = Pipe()
@@ -24,14 +24,15 @@ class StockfishHandler {
         print(proc.processIdentifier)
 
         Task {
-            let info = await waitForResponse()
+            let info = try await waitForResponse()
             print("info")
             print(info)
-            let res = await sendCommand("uci") { $0 == "uciok\n" }
+            let res = try await sendCommand("uci") { $0 == "uciok" }
             print("result:")
             print(res)
-            let ready = await sendCommand("isready")
+            let ready = try await sendCommand("isready")
             print(ready)
+            
         }
     }
 
@@ -64,15 +65,22 @@ class StockfishHandler {
 extension StockfishHandler {
     fileprivate func waitForResponse(
         terminatorPredicate: @escaping TerminatorPredicate = defaultTerminatorPredicate
-    ) async -> [StockfishResponse] {
+    ) async throws -> [StockfishResponse] {
         let handle = outPipe.fileHandleForReading
-        return await withCheckedContinuation { continuation in
+        return try await withCheckedThrowingContinuation { continuation in
             handle.readabilityHandler = { handle in
                 let str = String(decoding: handle.availableData, as: UTF8.self)
                 var payloads: [StockfishResponse] = []
                 for chunk in str.components(separatedBy: "\n") {
-                    payloads.append(Self.parseResponse(chunk))
-                    if terminatorPredicate(chunk + "\n") {
+                    do {
+                        if let parsed = try Self.parseResponse(chunk) { // Only append if parsed response isn't nil
+                            payloads.append(parsed)
+                        }
+                    } catch {
+                        continuation.resume(throwing: error)
+                        return
+                    }
+                    if terminatorPredicate(chunk) {
                         handle.readabilityHandler = nil
                         continuation.resume(returning: payloads)
                         return
@@ -98,21 +106,7 @@ extension StockfishHandler {
     }
 
     private static func defaultTerminatorPredicate(_ chunk: String) -> Bool {
-        chunk.isEmpty || chunk.last?.isNewline == true
-    }
-
-    /// Send a command to the engine through stdin and get its response
-    ///
-    /// - Parameters:
-    ///   - command: The command to write
-    ///   - resultTerminator: The character sequence that signifies the end of a response for a command
-    fileprivate func sendCommand(
-        _ command: String,
-        terminatorPredicate: @escaping TerminatorPredicate = defaultTerminatorPredicate
-    ) async -> [StockfishResponse] {
-        let writeCommand = command.last?.isNewline == true ? command : command + "\n"
-        await writeInput(writeCommand.data(using: .utf8)!)
-        return await waitForResponse(terminatorPredicate: terminatorPredicate)
+        true
     }
 }
 
@@ -120,14 +114,18 @@ typealias TerminatorPredicate = (String) -> Bool
 
 // Command parser
 extension StockfishHandler {
-    static fileprivate func parseResponse(_ response: String) -> StockfishResponse {
-        guard !response.isEmpty else { return .unknown(response) }
+    static fileprivate func parseResponse(_ response: String) throws -> StockfishResponse? {
+        guard !response.isEmpty else { return nil }
         let tokens = response.components(separatedBy: " ")
         switch (tokens.first!) {
         case "readyok":
             return .ready
         case "uciok":
             return .uciOK
+        case "option":
+            return .option(try UCISpecificDecoder().decode(StockfishResponse.Option.self, payload: response))
+        case "id":
+            return .id(try UCISpecificDecoder().decode(StockfishResponse.ID.self, payload: response))
         default:
             return .unknown(response)
         }
@@ -136,5 +134,32 @@ extension StockfishHandler {
 
 // Public API
 extension StockfishHandler {
+    /// Send a command to the engine through stdin and get its response
+    ///
+    /// - Parameters:
+    ///   - command: The command to write
+    ///   - resultTerminator: The character sequence that signifies the end of a response for a command
+    public func sendCommand(
+        _ command: String,
+        parameters: [String : String]? = nil,
+        terminatorPredicate: @escaping TerminatorPredicate = defaultTerminatorPredicate
+    ) async throws -> [StockfishResponse] {
+        var cmd = command.last?.isNewline == true ? command : command + "\n"
+        // Add parameters if present
+        if let parameters = parameters {
+            cmd += " "
+            for (key, param) in parameters {
+                cmd += key + " " + param + " "
+            }
+        }
+        await writeInput(cmd.data(using: .utf8)!)
+        return try await waitForResponse(terminatorPredicate: terminatorPredicate)
+    }
+
+    // Command aliases
     
+    /// Wait for the engine to be ready, commonly used after long-running commands
+    public func waitReady() async {
+        
+    }
 }

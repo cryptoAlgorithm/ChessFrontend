@@ -10,8 +10,6 @@ import Foundation
 protocol UCIDecodable {
     associatedtype Key: UCIKey
 
-    static var keys: Key { get }
-
     init(_ decoder: any UCIDecoder) throws
 }
 

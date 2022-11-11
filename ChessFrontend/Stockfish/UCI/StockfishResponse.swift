@@ -9,11 +9,30 @@ import Foundation
 
 enum StockfishResponse {
     /// Payload that informs the GUI of the engine's name or author
-    enum IDParams {
+    enum ID: UCIDecodable {
+        typealias Key = Keys
+
+        enum Keys: String, CaseIterable {
+            case author
+            case name
+        }
+
         /// A payload containing the name of the engine
         case author(String)
         /// A payload containing the engine's author
         case name(String)
+
+        init(_ decoder: UCIDecoder) throws {
+            if let author = try decoder.decodeStringOptional(Keys.author.rawValue) {
+                self = .author(author)
+            } else if let name = try decoder.decodeStringOptional(Keys.name.rawValue) {
+                self = .name(name)
+            } else {
+                throw UCIDecodingError.genericError(
+                    message: "Expected either a name or author key to be present, but found neither"
+                )
+            }
+        }
     }
 
     /// An UCI option
@@ -22,13 +41,59 @@ enum StockfishResponse {
     ///
     /// > Tip: Details about each case's associated value(s) are included within their
     /// > documentation discussion. Click on a case to view more details.
-    enum Option {
+    enum Option: UCIDecodable {
+        typealias Key = Keys
+
+        enum Keys: String, CaseIterable {
+            case name
+            case type
+            case defaultValue = "default"
+            case min
+            case max
+            case values = "var"
+        }
+
+        enum OptType: String {
+            case check
+            case spin
+            case combo
+            case button
+            case string
+        }
+
+        init(_ decoder: UCIDecoder) throws {
+            let name = try decoder.decodeString(Keys.name.rawValue)
+            let type = try decoder.decodeString(Keys.type.rawValue)
+            switch OptType(rawValue: type) {
+            case .button:
+                self = .button(name: name)
+            case .spin:
+                self = .spin(
+                    name: name,
+                    default: try decoder.decodeInt(Keys.defaultValue.rawValue),
+                    min: try decoder.decodeInt(Keys.min.rawValue),
+                    max: try decoder.decodeInt(Keys.max.rawValue)
+                )
+            case .check:
+                self = .check(
+                    name: name,
+                    default: try decoder.decodeBool(Keys.defaultValue.rawValue)
+                )
+            case .string:
+                self = .string(name: name, default: try decoder.decodeString(Keys.defaultValue.rawValue))
+            case .combo:
+                self = .combo(name: name, options: try decoder.decodeArray(Keys.values.rawValue))
+            default:
+                self = .unknown(name: name, type: type)
+            }
+        }
+
         /// Option that can be set either be true or false
         ///
         /// > Associated Values:
         /// > - `String`: Option name
         /// > - `Bool`: Default value
-        case check(String, Bool)
+        case check(name: String, default: Bool)
 
         /// Option that can be set a range of integers in a defined range
         ///
@@ -37,7 +102,7 @@ enum StockfishResponse {
         /// > - `Int`: Default value
         /// > - `Int`: Minimum value
         /// > - `Int`: Maximum value
-        case spin(String, Int, Int, Int)
+        case spin(name: String, default: Int, min: Int, max: Int)
 
         /// Option that can be set to different predefined string values
         ///
@@ -45,25 +110,36 @@ enum StockfishResponse {
         /// > - `String`: Option name
         /// > - `String`: Default selected value
         /// > -`[String]`: Possible options
-        case combo(String, [String])
+        case combo(name: String, options: [String])
 
         /// Option that can be used to send a command to the engine with a press of a button
         ///
         /// > Associated Values:
         /// > - `String`: Option name
-        case button(String)
+        case button(name: String)
 
         /// Option that can be an arbitrary string value
         ///
         /// > Associated Values:
         /// > - `String`: Option name
         /// > - `String`: Default value
-        case string(String, String)
+        case string(name: String, default: String)
+
+        /// An unknown type
+        case unknown(name: String, type: String)
     }
 
     /// An information payload
-    struct Info {
-        
+    enum Info: UCIDecodable {
+        typealias Key = Keys
+
+        enum Keys: String, CaseIterable {
+            case depth
+        }
+
+        init(_ decoder: UCIDecoder) throws {
+            throw UCIDecodingError.genericError(message: "no")
+        }
     }
 
     /// A `readyok` response from the engine
@@ -73,7 +149,7 @@ enum StockfishResponse {
     case uciOK
 
     /// Payload identifying the engine
-    case id(IDParams)
+    case id(ID)
 
     /// An infomation payload, sent while searching for a move
     case info(Info)
