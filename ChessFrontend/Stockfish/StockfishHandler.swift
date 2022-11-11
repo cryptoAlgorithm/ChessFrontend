@@ -64,15 +64,17 @@ class StockfishHandler {
 extension StockfishHandler {
     fileprivate func waitForResponse(
         terminatorPredicate: @escaping TerminatorPredicate = defaultTerminatorPredicate
-    ) async -> String {
+    ) async -> [StockfishResponse] {
         let handle = outPipe.fileHandleForReading
         return await withCheckedContinuation { continuation in
             handle.readabilityHandler = { handle in
                 let str = String(decoding: handle.availableData, as: UTF8.self)
+                var payloads: [StockfishResponse] = []
                 for chunk in str.components(separatedBy: "\n") {
+                    payloads.append(Self.parseResponse(chunk))
                     if terminatorPredicate(chunk + "\n") {
                         handle.readabilityHandler = nil
-                        continuation.resume(returning: str)
+                        continuation.resume(returning: payloads)
                         return
                     }
                 }
@@ -107,7 +109,7 @@ extension StockfishHandler {
     fileprivate func sendCommand(
         _ command: String,
         terminatorPredicate: @escaping TerminatorPredicate = defaultTerminatorPredicate
-    ) async -> String {
+    ) async -> [StockfishResponse] {
         let writeCommand = command.last?.isNewline == true ? command : command + "\n"
         await writeInput(writeCommand.data(using: .utf8)!)
         return await waitForResponse(terminatorPredicate: terminatorPredicate)
@@ -115,3 +117,24 @@ extension StockfishHandler {
 }
 
 typealias TerminatorPredicate = (String) -> Bool
+
+// Command parser
+extension StockfishHandler {
+    static fileprivate func parseResponse(_ response: String) -> StockfishResponse {
+        guard !response.isEmpty else { return .unknown(response) }
+        let tokens = response.components(separatedBy: " ")
+        switch (tokens.first!) {
+        case "readyok":
+            return .ready
+        case "uciok":
+            return .uciOK
+        default:
+            return .unknown(response)
+        }
+    }
+}
+
+// Public API
+extension StockfishHandler {
+    
+}

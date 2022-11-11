@@ -20,7 +20,10 @@
 		DA50B8152915325800FA58E4 /* stockfish in Resources */ = {isa = PBXBuildFile; fileRef = DA50B8142915325800FA58E4 /* stockfish */; };
 		DA50B81729154EB900FA58E4 /* StockfishHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA50B81629154EB900FA58E4 /* StockfishHandler.swift */; };
 		DA50B81C291625A400FA58E4 /* SFNotificationNames.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA50B81B291625A400FA58E4 /* SFNotificationNames.swift */; };
-		DA50B81E2917895700FA58E4 /* FromStockfishPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA50B81D2917895700FA58E4 /* FromStockfishPayload.swift */; };
+		DA50B81E2917895700FA58E4 /* StockfishResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA50B81D2917895700FA58E4 /* StockfishResponse.swift */; };
+		DA50B823291D378500FA58E4 /* UCISpecificDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA50B822291D378500FA58E4 /* UCISpecificDecoder.swift */; };
+		DA50B825291D380900FA58E4 /* UCIDecodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA50B824291D380900FA58E4 /* UCIDecodable.swift */; };
+		DA50B828291DDC1A00FA58E4 /* UCIDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA50B827291DDC1A00FA58E4 /* UCIDecoder.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,7 +43,10 @@
 		DA50B8142915325800FA58E4 /* stockfish */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = stockfish; sourceTree = "<group>"; };
 		DA50B81629154EB900FA58E4 /* StockfishHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockfishHandler.swift; sourceTree = "<group>"; };
 		DA50B81B291625A400FA58E4 /* SFNotificationNames.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SFNotificationNames.swift; sourceTree = "<group>"; };
-		DA50B81D2917895700FA58E4 /* FromStockfishPayload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FromStockfishPayload.swift; sourceTree = "<group>"; };
+		DA50B81D2917895700FA58E4 /* StockfishResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockfishResponse.swift; sourceTree = "<group>"; };
+		DA50B822291D378500FA58E4 /* UCISpecificDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UCISpecificDecoder.swift; sourceTree = "<group>"; };
+		DA50B824291D380900FA58E4 /* UCIDecodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UCIDecodable.swift; sourceTree = "<group>"; };
+		DA50B827291DDC1A00FA58E4 /* UCIDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UCIDecoder.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -126,11 +132,22 @@
 		DA50B81A2916258D00FA58E4 /* Stockfish */ = {
 			isa = PBXGroup;
 			children = (
+				DA50B826291DDBE400FA58E4 /* UCI */,
 				DA50B81629154EB900FA58E4 /* StockfishHandler.swift */,
 				DA50B81B291625A400FA58E4 /* SFNotificationNames.swift */,
-				DA50B81D2917895700FA58E4 /* FromStockfishPayload.swift */,
 			);
 			path = Stockfish;
+			sourceTree = "<group>";
+		};
+		DA50B826291DDBE400FA58E4 /* UCI */ = {
+			isa = PBXGroup;
+			children = (
+				DA50B81D2917895700FA58E4 /* StockfishResponse.swift */,
+				DA50B822291D378500FA58E4 /* UCISpecificDecoder.swift */,
+				DA50B824291D380900FA58E4 /* UCIDecodable.swift */,
+				DA50B827291DDC1A00FA58E4 /* UCIDecoder.swift */,
+			);
+			path = UCI;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -207,13 +224,16 @@
 				DA50B8072913CF8E00FA58E4 /* Piece.swift in Sources */,
 				DA50B81329151B3C00FA58E4 /* ChessViewController.swift in Sources */,
 				DA50B8052913CF1200FA58E4 /* BoardState.swift in Sources */,
+				DA50B825291D380900FA58E4 /* UCIDecodable.swift in Sources */,
 				DA50B7F62913CABB00FA58E4 /* ContentView.swift in Sources */,
 				DA50B81129150D2900FA58E4 /* View+.swift in Sources */,
 				DA50B81729154EB900FA58E4 /* StockfishHandler.swift in Sources */,
 				DA50B7F42913CABB00FA58E4 /* ChessFrontendApp.swift in Sources */,
+				DA50B828291DDC1A00FA58E4 /* UCIDecoder.swift in Sources */,
 				DA50B81C291625A400FA58E4 /* SFNotificationNames.swift in Sources */,
 				DA50B80B2913D82100FA58E4 /* PieceView.swift in Sources */,
-				DA50B81E2917895700FA58E4 /* FromStockfishPayload.swift in Sources */,
+				DA50B81E2917895700FA58E4 /* StockfishResponse.swift in Sources */,
+				DA50B823291D378500FA58E4 /* UCISpecificDecoder.swift in Sources */,
 				DA50B8032913CB0A00FA58E4 /* ChessView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
