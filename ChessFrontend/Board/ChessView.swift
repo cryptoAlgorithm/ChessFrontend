@@ -14,24 +14,23 @@ struct ChessView: View {
 
     var body: some View {
         LazyVGrid(
-            columns: [GridItem](repeating: GridItem(.flexible(minimum: 50, maximum: 100), spacing: 0), count: 8),
+            columns: [GridItem](
+                repeating: GridItem(.flexible(minimum: 50, maximum: 100), spacing: 0),
+                count: BoardState.boardSize
+            ),
             spacing: 0
         ) {
             ForEach(Array(board.boardState.enumerated()), id: \.offset) { idx, piece in
                 PieceView(
                     item: piece,
-                    bgAccented: !(idx + Int(floor(Double(idx)/8.0))).isMultiple(of: 2)
+                    bgAccented: !(idx + Int(floor(Double(idx)/Double(BoardState.boardSize)))).isMultiple(of: 2)
                 ) {
                     draggingIdx = idx
                 } dropped: {
                     guard let draggingIdx = draggingIdx else { return false }
                     guard idx != draggingIdx else { return false }
                     withAnimation {
-                        if piece.type != .empty {
-                            //board.boardState[idx] = Piece()
-                        }
-                        board.boardState[idx] = board.boardState[draggingIdx]
-                        board.boardState[draggingIdx] = Piece()
+                        board.makeMove(from: draggingIdx, to: idx)
                     }
                     return true
                 }

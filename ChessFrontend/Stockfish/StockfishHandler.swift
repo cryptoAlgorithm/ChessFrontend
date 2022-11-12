@@ -26,13 +26,10 @@ final class StockfishHandler: ObservableObject {
     init() throws {
         try initProc()
         try proc.run()
-        print(proc.processIdentifier)
 
         Task {
             _ = try await waitForResponse()
             let info = try await sendCommandGettingResponse(.uci) { $0 == "uciok" }
-            print("info:")
-            print(info)
             for inf in info {
                 if case let .id(ID) = inf {
                     if case let .name(name) = ID {
@@ -43,7 +40,6 @@ final class StockfishHandler: ObservableObject {
                 }
             }
             try await waitReady()
-            print("engine ready")
         }
     }
 

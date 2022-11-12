@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-@main
 struct ChessFrontendApp: App {
     static let engine = try? StockfishHandler()
 

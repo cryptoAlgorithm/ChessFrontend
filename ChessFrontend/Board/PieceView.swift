@@ -7,6 +7,9 @@
 
 import SwiftUI
 
+/// A single square on the chess board
+///
+/// This view is designed to be as "dumb" as possible to reduce impact during renders.
 struct PieceView: View {
     let item: Piece
     let bgAccented: Bool
@@ -56,33 +59,5 @@ struct BoardItemView_Previews: PreviewProvider {
         } dropped: {
             false
         }
-    }
-}
-
-// MARK: - Piece drop delegate
-extension PieceView: DropDelegate {
-    func validateDrop(info: DropInfo) -> Bool {
-        //Allow the drop to begin with any String set as the NSItemProvider
-        print("validate drop")
-        return info.hasItemsConforming(to: [PieceView.pieceUT])
-    }
-    
-    // MARK: Drop UI State
-    func dropEntered(info: DropInfo) {
-        print("drop entered!")
-       // dragOver = true
-    }
-    func dropExited(info: DropInfo) {
-       // dragOver = false
-    }
-    
-    // MARK: Drop and Save
-    func performDrop(info: DropInfo) -> Bool {
-        /*if let task = draggedTask {
-         return true
-         }else{
-         return false
-         }*/
-        return false
     }
 }
