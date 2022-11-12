@@ -20,10 +20,11 @@
 		DA50B8152915325800FA58E4 /* stockfish in Resources */ = {isa = PBXBuildFile; fileRef = DA50B8142915325800FA58E4 /* stockfish */; };
 		DA50B81729154EB900FA58E4 /* StockfishHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA50B81629154EB900FA58E4 /* StockfishHandler.swift */; };
 		DA50B81C291625A400FA58E4 /* SFNotificationNames.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA50B81B291625A400FA58E4 /* SFNotificationNames.swift */; };
-		DA50B81E2917895700FA58E4 /* StockfishResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA50B81D2917895700FA58E4 /* StockfishResponse.swift */; };
+		DA50B81E2917895700FA58E4 /* UCIResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA50B81D2917895700FA58E4 /* UCIResponse.swift */; };
 		DA50B823291D378500FA58E4 /* UCISpecificDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA50B822291D378500FA58E4 /* UCISpecificDecoder.swift */; };
 		DA50B825291D380900FA58E4 /* UCIDecodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA50B824291D380900FA58E4 /* UCIDecodable.swift */; };
 		DA50B828291DDC1A00FA58E4 /* UCIDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA50B827291DDC1A00FA58E4 /* UCIDecoder.swift */; };
+		DA50B82A291F3E0F00FA58E4 /* UCICommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA50B829291F3E0F00FA58E4 /* UCICommand.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,10 +44,11 @@
 		DA50B8142915325800FA58E4 /* stockfish */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = stockfish; sourceTree = "<group>"; };
 		DA50B81629154EB900FA58E4 /* StockfishHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockfishHandler.swift; sourceTree = "<group>"; };
 		DA50B81B291625A400FA58E4 /* SFNotificationNames.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SFNotificationNames.swift; sourceTree = "<group>"; };
-		DA50B81D2917895700FA58E4 /* StockfishResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockfishResponse.swift; sourceTree = "<group>"; };
+		DA50B81D2917895700FA58E4 /* UCIResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UCIResponse.swift; sourceTree = "<group>"; };
 		DA50B822291D378500FA58E4 /* UCISpecificDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UCISpecificDecoder.swift; sourceTree = "<group>"; };
 		DA50B824291D380900FA58E4 /* UCIDecodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UCIDecodable.swift; sourceTree = "<group>"; };
 		DA50B827291DDC1A00FA58E4 /* UCIDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UCIDecoder.swift; sourceTree = "<group>"; };
+		DA50B829291F3E0F00FA58E4 /* UCICommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UCICommand.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -142,10 +144,11 @@
 		DA50B826291DDBE400FA58E4 /* UCI */ = {
 			isa = PBXGroup;
 			children = (
-				DA50B81D2917895700FA58E4 /* StockfishResponse.swift */,
+				DA50B81D2917895700FA58E4 /* UCIResponse.swift */,
 				DA50B822291D378500FA58E4 /* UCISpecificDecoder.swift */,
 				DA50B824291D380900FA58E4 /* UCIDecodable.swift */,
 				DA50B827291DDC1A00FA58E4 /* UCIDecoder.swift */,
+				DA50B829291F3E0F00FA58E4 /* UCICommand.swift */,
 			);
 			path = UCI;
 			sourceTree = "<group>";
@@ -232,8 +235,9 @@
 				DA50B828291DDC1A00FA58E4 /* UCIDecoder.swift in Sources */,
 				DA50B81C291625A400FA58E4 /* SFNotificationNames.swift in Sources */,
 				DA50B80B2913D82100FA58E4 /* PieceView.swift in Sources */,
-				DA50B81E2917895700FA58E4 /* StockfishResponse.swift in Sources */,
+				DA50B81E2917895700FA58E4 /* UCIResponse.swift in Sources */,
 				DA50B823291D378500FA58E4 /* UCISpecificDecoder.swift in Sources */,
+				DA50B82A291F3E0F00FA58E4 /* UCICommand.swift in Sources */,
 				DA50B8032913CB0A00FA58E4 /* ChessView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -15,6 +15,9 @@ final class StockfishHandler {
 
     private(set) var isInit = false
 
+    public private(set) var engineAuthor: String?
+    public private(set) var engineName: String?
+
     /// Initialise an instance of the Stockfish handler
     ///
     /// Will attempt to start and communicate with the stockfish binary in the app's resources
@@ -27,12 +30,11 @@ final class StockfishHandler {
             let info = try await waitForResponse()
             print("info")
             print(info)
-            let res = try await sendCommand("uci") { $0 == "uciok" }
+            let res = try await sendCommandGettingResponse(.uci) { $0 == "uciok" }
             print("result:")
             print(res)
-            let ready = try await sendCommand("isready")
-            print(ready)
-            
+            try await waitReady()
+            print("engine ready")
         }
     }
 
@@ -41,7 +43,9 @@ final class StockfishHandler {
         proc.waitUntilExit()
     }
 
-    fileprivate func posixErr(_ error: Int32) -> Error { NSError(domain: NSPOSIXErrorDomain, code: Int(error), userInfo: nil) }
+    fileprivate static func posixErr(_ error: Int32) -> Error {
+        NSError(domain: NSPOSIXErrorDomain, code: Int(error), userInfo: nil)
+    }
 
     /// Initialise the Stockfish process
     private func initProc() throws {
@@ -52,7 +56,7 @@ final class StockfishHandler {
 
         // Configure the pipe to not send a SIGPIPE of the pipe was already closed
         let fcntlResult = fcntl(inPipe.fileHandleForWriting.fileDescriptor, F_SETNOSIGPIPE, 1)
-        guard fcntlResult >= 0 else { throw posixErr(errno) }
+        guard fcntlResult >= 0 else { throw Self.posixErr(errno) }
 
         proc.terminationHandler = { _ in
             DispatchQueue.main.async {
@@ -65,12 +69,12 @@ final class StockfishHandler {
 extension StockfishHandler {
     fileprivate func waitForResponse(
         terminatorPredicate: @escaping TerminatorPredicate = defaultTerminatorPredicate
-    ) async throws -> [StockfishResponse] {
+    ) async throws -> [UCIResponse] {
         let handle = outPipe.fileHandleForReading
         return try await withCheckedThrowingContinuation { continuation in
             handle.readabilityHandler = { handle in
                 let str = String(decoding: handle.availableData, as: UTF8.self)
-                var payloads: [StockfishResponse] = []
+                var payloads: [UCIResponse] = []
                 for chunk in str.components(separatedBy: "\n") {
                     do {
                         if let parsed = try Self.parseResponse(chunk) { // Only append if parsed response isn't nil
@@ -90,15 +94,18 @@ extension StockfishHandler {
         }
     }
 
-    private func writeInput(_ input: Data) async {
-        return await withCheckedContinuation { continuation in
+    private func writeInput(_ input: Data) async throws {
+        return try await withCheckedThrowingContinuation { continuation in
             let writeIO = DispatchIO(type: .stream, fileDescriptor: inPipe.fileHandleForWriting.fileDescriptor, queue: .main) { _ in
                 
             }
             let inputDD = input.withUnsafeBytes { DispatchData(bytes: $0) }
             writeIO.write(offset: 0, data: inputDD, queue: .main) { isDone, _, error in
                 if isDone || error != 0 {
-                    if error != 0 { print("haiya error") }
+                    if error != 0 {
+                        continuation.resume(throwing: Self.posixErr(error))
+                        return
+                    }
                     continuation.resume()
                 }
             }
@@ -106,15 +113,15 @@ extension StockfishHandler {
     }
 
     private static func defaultTerminatorPredicate(_ chunk: String) -> Bool {
-        true
+        true // so true
     }
 }
 
 typealias TerminatorPredicate = (String) -> Bool
 
-// Command parser
+// MARK: - Command parser wrapper
 extension StockfishHandler {
-    static fileprivate func parseResponse(_ response: String) throws -> StockfishResponse? {
+    static fileprivate func parseResponse(_ response: String) throws -> UCIResponse? {
         guard !response.isEmpty else { return nil }
         let tokens = response.components(separatedBy: " ")
         switch (tokens.first!) {
@@ -123,28 +130,50 @@ extension StockfishHandler {
         case "uciok":
             return .uciOK
         case "option":
-            return .option(try UCISpecificDecoder().decode(StockfishResponse.Option.self, payload: response))
+            return .option(try UCISpecificDecoder().decode(UCIResponse.Option.self, payload: response))
         case "id":
-            return .id(try UCISpecificDecoder().decode(StockfishResponse.ID.self, payload: response))
+            return .id(try UCISpecificDecoder().decode(UCIResponse.ID.self, payload: response))
+        case "info":
+            return .info(try UCISpecificDecoder().decode(UCIResponse.Info.self, payload: response))
         default:
             return .unknown(response)
         }
     }
 }
 
-// Public API
+// MARK: - Public API
 extension StockfishHandler {
     /// Send a command to the engine through stdin and get its response
     ///
     /// - Parameters:
-    ///   - command: The command to write
+    ///   - commandName: The command's name (first token in UCI string)
+    ///   - parameters: Command parameters as a dictionary
     ///   - resultTerminator: The character sequence that signifies the end of a response for a command
-    public func sendCommand(
-        _ command: String,
+    public func sendCommandGettingResponse(
+        _ commandName: UCICommand,
         parameters: [String : String]? = nil,
         terminatorPredicate: @escaping TerminatorPredicate = defaultTerminatorPredicate
-    ) async throws -> [StockfishResponse] {
-        var cmd = command.last?.isNewline == true ? command : command + "\n"
+    ) async throws -> [UCIResponse] {
+        try await sendCommand(commandName, parameters: parameters)
+        return try await waitForResponse(terminatorPredicate: terminatorPredicate)
+    }
+
+    /// Send a command to the engine
+    ///
+    /// This method will construct the UCI command that will be sent to the engine by concatinating
+    /// all provided parameters to the command.
+    ///
+    /// - Parameters:
+    ///   - commandName: The command's name (first token in UCI string, not the whole UCI command)
+    ///   - parameters: Command parameters as a dictionary
+    ///
+    /// ## See Also
+    /// - ``sendCommandGettingResponse(_:parameters:terminatorPredicate:)``
+    public func sendCommand(
+        _ commandName: UCICommand,
+        parameters: [String : String]? = nil
+    ) async throws {
+        var cmd = commandName.rawValue + "\n"
         // Add parameters if present
         if let parameters = parameters {
             cmd += " "
@@ -152,14 +181,19 @@ extension StockfishHandler {
                 cmd += key + " " + param + " "
             }
         }
-        await writeInput(cmd.data(using: .utf8)!)
-        return try await waitForResponse(terminatorPredicate: terminatorPredicate)
+        try await writeInput(cmd.data(using: .utf8)!)
     }
 
-    // Command aliases
-    
+    // MARK: Command aliases
     /// Wait for the engine to be ready, commonly used after long-running commands
-    public func waitReady() async {
-        
+    public func waitReady() async throws {
+        _ = try await sendCommandGettingResponse(.isReady) { $0 == "readyok" }
+    }
+
+    /// Start a new game
+    ///
+    /// This will send the `ucinewgame` command 
+    public func newGame() async throws {
+        try await sendCommand(.newGame)
     }
 }

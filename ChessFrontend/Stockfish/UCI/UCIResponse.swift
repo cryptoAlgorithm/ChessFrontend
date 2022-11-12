@@ -1,5 +1,5 @@
 //
-//  StockfishResponse.swift
+//  UCIResponse.swift
 //  ChessFrontend
 //
 //  Created by Vincent Kwok on 6/11/22.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum StockfishResponse {
+enum UCIResponse {
     /// Payload that informs the GUI of the engine's name or author
     enum ID: UCIDecodable {
         typealias Key = Keys
@@ -130,7 +130,7 @@ enum StockfishResponse {
     }
 
     /// An information payload
-    enum Info: UCIDecodable {
+    struct Info: UCIDecodable {
         typealias Key = Keys
 
         enum Keys: String, CaseIterable {
@@ -138,7 +138,7 @@ enum StockfishResponse {
         }
 
         init(_ decoder: UCIDecoder) throws {
-            throw UCIDecodingError.genericError(message: "no")
+            
         }
     }
 
