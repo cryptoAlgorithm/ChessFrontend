@@ -1,5 +1,5 @@
 //
-//  UCISpecificDecoder.swift
+//  UCIDecode.swift
 //  ChessFrontend
 //
 //  Created by Vincent Kwok on 10/11/22.
@@ -12,8 +12,9 @@ import Foundation
 /// This does not conform to Swift's Decoder for good reason as the Decoder protocol is
 /// overkill and is not fitting to be used here. It requires the keys of the data to be known
 /// before decoding, but that is not possible with the UCI protocol.
-struct UCISpecificDecoder {
-    public func decode<Payload: UCIDecodable>(
+struct UCIDecode {
+    /// Decode a payload string into a ``UCIDecodable`` storage object
+    public static func decode<Payload: UCIDecodable>(
         _ decoding: Payload.Type,
         payload: String
     ) throws -> Payload where Payload.Key.RawValue == String {
@@ -22,7 +23,7 @@ struct UCISpecificDecoder {
     }
 }
 
-fileprivate extension UCISpecificDecoder {
+fileprivate extension UCIDecode {
     static func decodePayload(decoding payload: String, keys: [String]) -> DecodedPayload {
         // A temp dict for values to be added during decoding
         var dict: DecodedPayload = Dictionary(uniqueKeysWithValues: keys.map { ($0, []) })

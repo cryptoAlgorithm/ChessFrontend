@@ -9,7 +9,6 @@ import SwiftUI
 
 @main
 struct ChessFrontendApp: App {
-    @StateObject private var board = BoardState()
     static let engine = try? StockfishHandler()
 
     @State private var initError: String?
@@ -17,14 +16,11 @@ struct ChessFrontendApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .toolbar(.visible, for: .windowToolbar)
                 .navigationTitle("Chess (real)")
-                .environmentObject(board)
                 .onReceive(NotificationCenter.default.publisher(for: .stockfishProcTerminated)) { _ in
                     initError = "Stockfish process terminated unexpectedly"
                 }
                 .onAppear {
-                    board.resetBoard()
                     if Self.engine == nil {
                         initError = "Stockfish initialisation failed"
                     }

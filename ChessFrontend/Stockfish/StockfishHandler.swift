@@ -8,7 +8,7 @@
 import Foundation
 
 /// Facilitates various interactions with the Stockfish chess engine
-final class StockfishHandler {
+final class StockfishHandler: ObservableObject {
     fileprivate let proc = Process()
     fileprivate let inPipe = Pipe()
     fileprivate let outPipe = Pipe()
@@ -17,6 +17,8 @@ final class StockfishHandler {
 
     public private(set) var engineAuthor: String?
     public private(set) var engineName: String?
+
+    public private(set) var options: [UCIResponse.Option] = []
 
     /// Initialise an instance of the Stockfish handler
     ///
@@ -27,12 +29,19 @@ final class StockfishHandler {
         print(proc.processIdentifier)
 
         Task {
-            let info = try await waitForResponse()
-            print("info")
+            _ = try await waitForResponse()
+            let info = try await sendCommandGettingResponse(.uci) { $0 == "uciok" }
+            print("info:")
             print(info)
-            let res = try await sendCommandGettingResponse(.uci) { $0 == "uciok" }
-            print("result:")
-            print(res)
+            for inf in info {
+                if case let .id(ID) = inf {
+                    if case let .name(name) = ID {
+                        engineName = name
+                    } else if case let .author(author) = ID {
+                        engineAuthor = author
+                    }
+                }
+            }
             try await waitReady()
             print("engine ready")
         }
@@ -130,11 +139,11 @@ extension StockfishHandler {
         case "uciok":
             return .uciOK
         case "option":
-            return .option(try UCISpecificDecoder().decode(UCIResponse.Option.self, payload: response))
+            return .option(try UCIDecode.decode(UCIResponse.Option.self, payload: response))
         case "id":
-            return .id(try UCISpecificDecoder().decode(UCIResponse.ID.self, payload: response))
+            return .id(try UCIDecode.decode(UCIResponse.ID.self, payload: response))
         case "info":
-            return .info(try UCISpecificDecoder().decode(UCIResponse.Info.self, payload: response))
+            return .info(try UCIDecode.decode(UCIResponse.Info.self, payload: response))
         default:
             return .unknown(response)
         }

@@ -32,4 +32,8 @@ class BoardState: ObservableObject {
             + pawns.map { Piece($0, side: .white) }
             + Self.defaultSetup.map { Piece($0, side: .white) }
     }
+
+    init() {
+        resetBoard()
+    }
 }

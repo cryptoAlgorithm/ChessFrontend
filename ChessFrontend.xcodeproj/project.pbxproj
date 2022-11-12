@@ -21,10 +21,11 @@
 		DA50B81729154EB900FA58E4 /* StockfishHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA50B81629154EB900FA58E4 /* StockfishHandler.swift */; };
 		DA50B81C291625A400FA58E4 /* SFNotificationNames.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA50B81B291625A400FA58E4 /* SFNotificationNames.swift */; };
 		DA50B81E2917895700FA58E4 /* UCIResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA50B81D2917895700FA58E4 /* UCIResponse.swift */; };
-		DA50B823291D378500FA58E4 /* UCISpecificDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA50B822291D378500FA58E4 /* UCISpecificDecoder.swift */; };
+		DA50B823291D378500FA58E4 /* UCIDecode.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA50B822291D378500FA58E4 /* UCIDecode.swift */; };
 		DA50B825291D380900FA58E4 /* UCIDecodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA50B824291D380900FA58E4 /* UCIDecodable.swift */; };
 		DA50B828291DDC1A00FA58E4 /* UCIDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA50B827291DDC1A00FA58E4 /* UCIDecoder.swift */; };
 		DA50B82A291F3E0F00FA58E4 /* UCICommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA50B829291F3E0F00FA58E4 /* UCICommand.swift */; };
+		DA50B82C291F582400FA58E4 /* Documentation.docc in Sources */ = {isa = PBXBuildFile; fileRef = DA50B82B291F582400FA58E4 /* Documentation.docc */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -45,10 +46,11 @@
 		DA50B81629154EB900FA58E4 /* StockfishHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockfishHandler.swift; sourceTree = "<group>"; };
 		DA50B81B291625A400FA58E4 /* SFNotificationNames.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SFNotificationNames.swift; sourceTree = "<group>"; };
 		DA50B81D2917895700FA58E4 /* UCIResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UCIResponse.swift; sourceTree = "<group>"; };
-		DA50B822291D378500FA58E4 /* UCISpecificDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UCISpecificDecoder.swift; sourceTree = "<group>"; };
+		DA50B822291D378500FA58E4 /* UCIDecode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UCIDecode.swift; sourceTree = "<group>"; };
 		DA50B824291D380900FA58E4 /* UCIDecodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UCIDecodable.swift; sourceTree = "<group>"; };
 		DA50B827291DDC1A00FA58E4 /* UCIDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UCIDecoder.swift; sourceTree = "<group>"; };
 		DA50B829291F3E0F00FA58E4 /* UCICommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UCICommand.swift; sourceTree = "<group>"; };
+		DA50B82B291F582400FA58E4 /* Documentation.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; name = Documentation.docc; path = ChessFrontend/Documentation.docc; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,6 +67,7 @@
 		DA50B7E72913CABB00FA58E4 = {
 			isa = PBXGroup;
 			children = (
+				DA50B82B291F582400FA58E4 /* Documentation.docc */,
 				DA50B8142915325800FA58E4 /* stockfish */,
 				DA50B7F22913CABB00FA58E4 /* ChessFrontend */,
 				DA50B7F12913CABB00FA58E4 /* Products */,
@@ -145,7 +148,7 @@
 			isa = PBXGroup;
 			children = (
 				DA50B81D2917895700FA58E4 /* UCIResponse.swift */,
-				DA50B822291D378500FA58E4 /* UCISpecificDecoder.swift */,
+				DA50B822291D378500FA58E4 /* UCIDecode.swift */,
 				DA50B824291D380900FA58E4 /* UCIDecodable.swift */,
 				DA50B827291DDC1A00FA58E4 /* UCIDecoder.swift */,
 				DA50B829291F3E0F00FA58E4 /* UCICommand.swift */,
@@ -227,6 +230,7 @@
 				DA50B8072913CF8E00FA58E4 /* Piece.swift in Sources */,
 				DA50B81329151B3C00FA58E4 /* ChessViewController.swift in Sources */,
 				DA50B8052913CF1200FA58E4 /* BoardState.swift in Sources */,
+				DA50B82C291F582400FA58E4 /* Documentation.docc in Sources */,
 				DA50B825291D380900FA58E4 /* UCIDecodable.swift in Sources */,
 				DA50B7F62913CABB00FA58E4 /* ContentView.swift in Sources */,
 				DA50B81129150D2900FA58E4 /* View+.swift in Sources */,
@@ -236,7 +240,7 @@
 				DA50B81C291625A400FA58E4 /* SFNotificationNames.swift in Sources */,
 				DA50B80B2913D82100FA58E4 /* PieceView.swift in Sources */,
 				DA50B81E2917895700FA58E4 /* UCIResponse.swift in Sources */,
-				DA50B823291D378500FA58E4 /* UCISpecificDecoder.swift in Sources */,
+				DA50B823291D378500FA58E4 /* UCIDecode.swift in Sources */,
 				DA50B82A291F3E0F00FA58E4 /* UCICommand.swift in Sources */,
 				DA50B8032913CB0A00FA58E4 /* ChessView.swift in Sources */,
 			);
@@ -378,6 +382,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.cryptoalgo.ChessFrontend;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -406,6 +411,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.cryptoalgo.ChessFrontend;
 				PRODUCT_NAME = "$(TARGET_NAME)";
