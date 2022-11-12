@@ -37,6 +37,7 @@ class BoardState: ObservableObject {
             + [Piece](repeating: Piece(), count: Self.boardSize*(Self.boardSize - 4)) // 4 rows of empty squares
             + pawns.map { Piece($0, side: .white) }
             + Self.defaultSetup.map { Piece($0, side: .white) }
+        moves = []
     }
 
     public func makeMove(from: Int, to: Int) {
