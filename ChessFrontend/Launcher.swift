@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+/// A dummy main struct that returns different main `App`s depending if the app is running normally or being tested
 @main
 struct Launcher {
     static func main() throws {
@@ -18,6 +19,7 @@ struct Launcher {
     }
 }
 
+/// The main app entrypoint when testing
 struct TestApp: App {
     var body: some Scene {
         WindowGroup { Text("Unit testing") }

@@ -122,7 +122,11 @@ extension StockfishHandler {
     }
 }
 
-typealias TerminatorPredicate = (String) -> Bool
+/// Determine when a communication from the engine has completed
+///
+/// - Parameter chunk: The chunk received from the engine
+/// - Returns: `true` if the current communication is complete, `false` if more input from the engine should be gathered
+typealias TerminatorPredicate = (_ chunk: String) -> Bool
 
 // MARK: - Command parser wrapper
 extension StockfishHandler {
@@ -200,5 +204,22 @@ extension StockfishHandler {
     /// This will send the `ucinewgame` command 
     public func newGame() async throws {
         try await sendCommand(.newGame)
+    }
+
+    /// Update the engine's internal board with a list of moves
+    ///
+    /// - Parameter moves: an array of moves by _both players_ since the beginning of the game in expanded algebraic notation
+    public func updatePosition(moves: [Move]) async throws {
+        try await sendCommand(
+            .position,
+            parameters: ["startpos": moves.map { $0.description }.joined(separator: " ")]
+        )
+    }
+    
+    /// Search for a move at a certain depth
+    ///
+    /// Set the location before using this function with ``StockfishHandler/updatePosition(moves:)``
+    public func search(depth: Int = 20) async throws {
+        
     }
 }

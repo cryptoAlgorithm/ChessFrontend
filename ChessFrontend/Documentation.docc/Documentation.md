@@ -18,15 +18,49 @@ pieces.
 
 ## Topics
 
+### Engine
+
+Provides a simple interface for several engine commands.
+
+- ``StockfishHandler``
+- ``TerminatorPredicate``
+
 ### UCI
 
-Handles communication with the engine through the UCI protocol, parsing UCI
-strings from the engine and constructing commands to be sent to the engine.
+Various structs and enums that store data to and from the engine.
 
 - ``UCICommand``
 - ``UCIResponse``
-#### Reposs
+
+### UCI Decoding
+
+Parses UCI strings from the engine into ``UCIDecodable`` storage objects.
+
+- ``UCIDecode``
 - ``UCIDecoder``
+- ``UCIDecodable``
+- ``UCIDecodingError``
+- ``UCIKey``
 
-### Engine
+### Chess
 
+Represents various aspects of items making up the logic and items behind
+the game.
+
+- ``BoardState``
+- ``Piece``
+- ``PieceType``
+- ``PieceSide``
+- ``Move``
+- ``PieceLocation``
+
+### SwiftUI Views
+
+Views that make up the GUI of this app.
+
+- ``ChessView``
+- ``PieceView``
+- ``ContentView``
+- ``ChessFrontendApp``
+- ``Launcher``
+- ``TestApp``

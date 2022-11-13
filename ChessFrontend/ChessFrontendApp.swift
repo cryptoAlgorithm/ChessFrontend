@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+/// The main app entrypoint when running normally
 struct ChessFrontendApp: App {
     static let engine = try? StockfishHandler()
 

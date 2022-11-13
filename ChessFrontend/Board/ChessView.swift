@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+/// Renders a grid of chess pieces in a chess board-like layout
 struct ChessView: View {
     @EnvironmentObject private var board: BoardState
 
