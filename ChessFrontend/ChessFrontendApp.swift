@@ -34,6 +34,9 @@ struct ChessFrontendApp: App {
                 } message: {
                     Text("This is a fatal error and cannot be dismissed")
                 }
+                // Force the app to be in dark theme and introduce light theme support later,
+                // calling it a new "feature"
+                .environment(\.colorScheme, .dark)
         }
         .windowToolbarStyle(.unifiedCompact)
     }

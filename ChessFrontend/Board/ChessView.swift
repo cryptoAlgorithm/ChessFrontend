@@ -37,6 +37,7 @@ struct ChessView: View {
                 }
             }
         }
+        .background(Color("BoardNeutral"))
         // This isn't redundant - it allows the window to scale properly
         .aspectRatio(1, contentMode: .fit)
         .clipShape(RoundedRectangle(cornerRadius: 7, style: .continuous))
