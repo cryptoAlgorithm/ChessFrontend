@@ -36,12 +36,38 @@ public struct PieceLocation {
     /// Y coordinate of the piece's location (1-indexed)
     public let y: Int
 
+    public var boardIdx: Int {
+        get {
+            x + (BoardState.boardSize-y)*BoardState.boardSize - 1
+        }
+    }
+
+    enum EANDecodingError: Error {
+        case wrongLength
+        case corrupted
+    }
+
     /// Creates an instance of this struct from indices of the to and from locations in the flattened board array
     ///
     /// - Parameter boardIdx: Index of piece location in the flattened 1D board array (0-indexed)
     public init(boardIdx: Int) {
         x = (boardIdx % BoardState.boardSize) + 1
         y = BoardState.boardSize - boardIdx/BoardState.boardSize
+    }
+
+    /// Create an instance of this struct from a position on the chess board
+    public init(from ean: String) throws {
+        guard ean.count == 2 else {
+            throw EANDecodingError.wrongLength
+        }
+        guard let parsedY = ean.last?.wholeNumberValue else {
+            throw EANDecodingError.corrupted
+        }
+        y = parsedY
+        guard let firstAscii = ean.first?.asciiValue else {
+            throw EANDecodingError.corrupted
+        }
+        x = Int(firstAscii) - Int(Unicode.Scalar("a").value) + 1
     }
 }
 

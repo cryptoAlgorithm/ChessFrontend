@@ -22,6 +22,11 @@ struct Move {
         from = PieceLocation(boardIdx: fromBoardIdx)
         to = PieceLocation(boardIdx: toBoardIdx)
     }
+
+    public init(from str: String) throws {
+        from = try PieceLocation(from: String(str.prefix(2)))
+        to = try PieceLocation(from: String(str.suffix(2)))
+    }
 }
 
 extension Move: CustomStringConvertible {
