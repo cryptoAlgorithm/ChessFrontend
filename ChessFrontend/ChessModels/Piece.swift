@@ -8,24 +8,33 @@
 import Foundation
 
 /// A struct representing a chess piece
-public struct Piece {
+public struct Piece: Identifiable {
     /// The type of chess piece this struct represents
     public let type: PieceType
+
     /// The side this chess piece belongs to
     ///
     /// Will only be `nil` if ``Piece/type`` is ``PieceType/empty``.
     public let side: PieceSide?
 
+    /// Unique ID identifying this piece in the chess board
+    ///
+    /// > This ID is only guaranteed to be unique across all pieces currently
+    /// > on the chess board.
+    public let id: UUID
+
     /// Create a chess piece of a specific type and side
-    public init(_ type: PieceType = .empty, side: PieceSide) {
+    public init(_ type: PieceType, side: PieceSide) {
         self.type = type
         self.side = side
+        id = UUID()
     }
 
     /// Create an empty chess piece
     public init() {
         type = .empty
         side = nil
+        id = UUID()
     }
 }
 

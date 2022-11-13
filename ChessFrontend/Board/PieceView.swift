@@ -31,7 +31,7 @@ struct PieceView: View {
 
     var body: some View {
         Rectangle()
-            .fill(bgAccented ? Color.accentColor : .gray)
+            .fill(bgAccented ? Color.accentColor : .init("BoardNeutral"))
             .overlay { itemImage }
             .overlay {
                 if dragOver {

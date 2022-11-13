@@ -21,7 +21,7 @@ struct ChessView: View {
             ),
             spacing: 0
         ) {
-            ForEach(Array(board.boardState.enumerated()), id: \.offset) { idx, piece in
+            ForEach(Array(board.boardState.enumerated()), id: \.element.id) { idx, piece in
                 PieceView(
                     item: piece,
                     bgAccented: !(idx + Int(floor(Double(idx)/Double(BoardState.boardSize)))).isMultiple(of: 2)
