@@ -66,9 +66,8 @@ fileprivate struct _Decoder: UCIDecoder {
     }
 
     func decodeInt(_ key: String) throws -> Int {
-        let strVal = try decodeString(key)
-        guard let val = Int(strVal) else {
-            throw UCIDecodingError.dataCorrupted(value: strVal, requestedType: "Int")
+        guard let val = try decodeIntOptional(key) else {
+            throw UCIDecodingError.keyNotFound(requestedKey: key)
         }
         return val
     }
@@ -97,6 +96,17 @@ fileprivate struct _Decoder: UCIDecoder {
             throw UCIDecodingError.tooManyElements(key: key, actualCount: val!.count)
         }
         return val?.count == 0 ? nil : val?[0]
+    }
+
+    func decodeIntOptional(_ key: String) throws -> Int? {
+        if let strVal = try decodeStringOptional(key) {
+            guard let val = Int(strVal) else {
+                throw UCIDecodingError.dataCorrupted(value: strVal, requestedType: "Int")
+            }
+            return val
+        } else {
+            return nil
+        }
     }
 }
 

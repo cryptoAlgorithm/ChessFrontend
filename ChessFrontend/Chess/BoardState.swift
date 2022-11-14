@@ -15,6 +15,8 @@ class BoardState: ObservableObject {
     @Published public var moves: [Move] = []
     /// Side that will make the next move
     @Published public var currentSide: PieceSide
+    /// Number of "full moves" - incremented after every black move
+    @Published public var fullMoves = 1
 
     /// Length of each side of the board
     static public let boardSize = 8
@@ -31,8 +33,38 @@ class BoardState: ObservableObject {
         .rook
     ]
 
+    /// Get the FEN representation of the board
+    ///
+    /// This doesn't currently produce a fully valid FEN string, only one that's sufficient to satisfy
+    /// the needs of Stockfish.
+    public var fen: String {
+        var emptySpaces = 0
+        var fenPieces = ""
+        for (idx, piece) in board.enumerated() {
+            if piece.type == .empty {
+                emptySpaces += 1
+            } else {
+                if emptySpaces != 0 {
+                    fenPieces += String(emptySpaces)
+                    emptySpaces = 0
+                }
+                let pieceName = piece.type.rawValue.first!
+                fenPieces += piece.side == .white ? pieceName.uppercased() : pieceName.lowercased()
+            }
+            if (idx+1) % Self.boardSize == 0 {
+                if emptySpaces != 0 {
+                    fenPieces += String(emptySpaces)
+                    emptySpaces = 0
+                }
+                fenPieces += "/"
+            }
+        }
+        // Currently doesn't handle castling, en passant and halfmoves
+        return "\(fenPieces) \(currentSide.rawValue.first!.lowercased()) - - 0 \(fullMoves)"
+    }
+
     /// Reset the board to an initial state
-    public func resetBoard(resetSide: Bool = true) {
+    public func resetBoard() {
         let pawns = [PieceType](repeating: .pawn, count: Self.boardSize)
         // Construct the board state from the standard initial chess board
         // This doesn't scale properly when boardSize is increased
@@ -44,9 +76,7 @@ class BoardState: ObservableObject {
             + Self.defaultSetup.map { Piece($0, side: .white) }
         // Reset moves
         moves = []
-        if resetSide {
-            currentSide = .init()
-        }
+        currentSide = .white
         Task {
             try await ChessFrontendApp.engine!.newGame()
             try await ChessFrontendApp.engine!.waitReady()
@@ -66,7 +96,7 @@ class BoardState: ObservableObject {
         // Black is always the AI side
         guard currentSide == .black else { return }
         Task {
-            try await ChessFrontendApp.engine!.updatePosition(moves: moves)
+            try await ChessFrontendApp.engine!.updatePosition(fen: fen)
             // Force-unwrap because we shouldn't have gotten here if the engine couldn't be init
             let infos = try await ChessFrontendApp.engine!.search(depth: 20)
             print("updated moves")
@@ -78,13 +108,13 @@ class BoardState: ObservableObject {
                     print("best move: \(bestMove)")
                 }
             }
+            fullMoves += 1
         }
     }
 
     /// Create an instance of this class
     @MainActor init() {
-        currentSide = .init()
-        resetBoard(resetSide: false)
-        playAIMove()
+        currentSide = .white
+        resetBoard()
     }
 }

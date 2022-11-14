@@ -135,10 +135,33 @@ enum UCIResponse {
 
         enum Keys: String, CaseIterable {
             case depth
+            case selectiveDepth = "seldepth"
+            case time
+            case nodes
+            case pv // Best play found
+            case multiPV = "multipv"
+            case score
+            case currentMove = "currmove"
+            case currentMoveNumber = "currmovenumber"
+            case hashFull = "hashfull"
+            case nps
+            case tableHits = "tbhits"
+            case CPULoad = "cpuload"
+            case displayString = "string"
+            case refutation
+            case currentLine = "currline"
         }
 
+        let depth: Int?
+        let currentMove: Move?
+        let currentMoveNumber: Int?
+
         init(_ decoder: UCIDecoder) throws {
-            
+            depth = try decoder.decodeIntOptional(Keys.depth.rawValue)
+            if let currMove = try decoder.decodeStringOptional(Keys.currentMove.rawValue) {
+                currentMove = try Move(from: currMove)
+            } else { currentMove = nil }
+            currentMoveNumber = try decoder.decodeIntOptional(Keys.currentMoveNumber.rawValue)
         }
     }
 

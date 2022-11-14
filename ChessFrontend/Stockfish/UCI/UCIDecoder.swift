@@ -70,4 +70,11 @@ protocol UCIDecoder {
     /// - Throws: ``UCIDecodingError/tooManyElements(key:actualCount:)`` if an array was found at the given key instead
     /// - Returns: `nil` if no value was found at the requested key, otherwise the `String` value present at the given key
     func decodeStringOptional(_ key: String) throws -> String?
+
+    /// Decode an optional `Int` at a certain key
+    ///
+    /// - Throws: ``UCIDecodingError/tooManyElements(key:actualCount:)`` if an array was found at the given key instead,
+    ///           ``UCIDecodingError/dataCorrupted(value:requestedType:)`` if the retrieved string value could not be parsed as an Int
+    /// - Returns: `nil` if no value was found at the requested key, otherwise the `String` value present at the given key
+    func decodeIntOptional(_ key: String) throws -> Int?
 }

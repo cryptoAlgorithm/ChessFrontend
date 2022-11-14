@@ -84,7 +84,12 @@ extension StockfishHandler {
         return try await withCheckedThrowingContinuation { continuation in
             responseWaitGroup.wait()
             responseWaitGroup.enter()
+            print("entering group")
             handle.readabilityHandler = { handle in
+                /*if handle.availableData.isEmpty {
+                    handle.readabilityHandler = nil
+                    continuation.resume(returning: [])
+                }*/
                 let str = String(decoding: handle.availableData, as: UTF8.self)
                 for chunk in str.components(separatedBy: "\n") {
                     do {
@@ -94,6 +99,8 @@ extension StockfishHandler {
                             Task { await payloads.add(response: parsed) }
                         }
                     } catch {
+                        print("throwing error \(error)")
+                        handle.readabilityHandler = nil
                         continuation.resume(throwing: error)
                         return
                     }
@@ -232,6 +239,16 @@ extension StockfishHandler {
         try await sendCommand(
             .position,
             parameters: ["startpos moves": moves.map { $0.description }.joined(separator: " ")]
+        )
+    }
+
+    /// Update the engine's internal board with a FEN string
+    ///
+    /// - Parameter fen: FEN string describing the current state of the board
+    public func updatePosition(fen: String) async throws {
+        try await sendCommand(
+            .position,
+            parameters: ["fen": fen]
         )
     }
 
