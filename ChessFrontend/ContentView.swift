@@ -14,27 +14,46 @@ struct ContentView: View {
     @StateObject private var board = BoardState()
 
     var body: some View {
-        ZStack {
-            HStack(spacing: 0) {
-                VStack {
-                    Spacer()
-                    Text("You").font(.largeTitle).fontWeight(.black)
+        HStack(spacing: 0) {
+            VStack(alignment: .leading) {
+                Spacer()
+                GroupBox {
+                    if board.moves.isEmpty {
+                        Text("No moves yet").font(.caption).frame(maxWidth: .infinity)
+                    } else {
+                        ScrollView {
+                            Text(board.moves.map { $0.description }.joined(separator: ", "))
+                                .font(.monospaced(.body)())
+                                .multilineTextAlignment(.leading)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                        }.frame(maxHeight: 100)
+                    }
+                } label: {
+                    Label("Move History", systemImage: "arrowshape.turn.up.backward.badge.clock")
                 }
-                .padding(24)
-                .frame(minWidth: 200, maxWidth: .infinity, alignment: .leading)
-                ChessView()
-                    .frame(width: 500)
-                    .fixedSize()
-                    .padding(.vertical, 16)
-                    .background(Rectangle().fill(.red.opacity(0.4)).scaleEffect(1.05).blur(radius: 40))
-                VStack(alignment: .trailing) {
-                    Spacer()
-                    Text(String(describing: board.moves))
-                    Text("Bot").font(.largeTitle).fontWeight(.black)
+                if board.currentSide == .black {
+                    Text("Making move...")
                 }
-                .padding(24)
-                .frame(minWidth: 200, maxWidth: .infinity, alignment: .trailing)
+                Text("Bot").font(.largeTitle).fontWeight(.black)
             }
+            .padding(24)
+            .frame(minWidth: 200, maxWidth: .infinity, alignment: .leading)
+
+            ChessView(moveDisabled: board.currentSide == .black)
+                .frame(width: 500)
+                .fixedSize()
+                .padding(.vertical, 16)
+                .background(Rectangle().fill(.red.opacity(0.4)).scaleEffect(1.07).blur(radius: 56))
+
+            VStack(alignment: .trailing) {
+                Spacer()
+                if board.currentSide == .white {
+                    Text("Your turn")
+                }
+                Text("You").font(.largeTitle).fontWeight(.black)
+            }
+            .padding(24)
+            .frame(minWidth: 200, maxWidth: .infinity, alignment: .trailing)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(.black)
@@ -42,8 +61,8 @@ struct ContentView: View {
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 Button {
+                    withAnimation { board.resetBoard() }
                     gameOptionsPresented = true
-                    board.resetBoard()
                 } label: {
                     Label("Reset game", systemImage: "arrow.clockwise")
                 }.help("Reset game")

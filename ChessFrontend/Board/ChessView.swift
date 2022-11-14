@@ -11,6 +11,8 @@ import SwiftUI
 struct ChessView: View {
     @EnvironmentObject private var board: BoardState
 
+    let moveDisabled: Bool
+
     @State private var draggingIdx: Int?
 
     var body: some View {
@@ -21,7 +23,7 @@ struct ChessView: View {
             ),
             spacing: 0
         ) {
-            ForEach(Array(board.boardState.enumerated()), id: \.element.id) { idx, piece in
+            ForEach(Array(board.board.enumerated()), id: \.element.id) { idx, piece in
                 PieceView(
                     item: piece,
                     bgAccented: !(idx + Int(floor(Double(idx)/Double(BoardState.boardSize)))).isMultiple(of: 2)
@@ -40,12 +42,12 @@ struct ChessView: View {
         .background(Color("BoardNeutral"))
         // This isn't redundant - it allows the window to scale properly
         .aspectRatio(1, contentMode: .fit)
-        .clipShape(RoundedRectangle(cornerRadius: 7, style: .continuous))
+        .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
     }
 }
 
 struct ChessView_Previews: PreviewProvider {
     static var previews: some View {
-        ChessView()
+        ChessView(moveDisabled: false)
     }
 }

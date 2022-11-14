@@ -10,12 +10,12 @@ import Foundation
 /// A struct to represent a chess move
 ///
 /// This doesn't do any validation and is simply for the storage of moves
-struct Move {
+public struct Move {
     /// Coordinates of the square to move from
-    let from: PieceLocation
+    public let from: PieceLocation
 
     /// Coordinates of the square to move to
-    let to: PieceLocation
+    public let to: PieceLocation
 
     /// Creates an instance of this struct from indices of the to and from locations in the flattened board array
     public init(fromBoardIdx: Int, toBoardIdx: Int) {
@@ -30,5 +30,5 @@ struct Move {
 }
 
 extension Move: CustomStringConvertible {
-    var description: String { "\(from)\(to)" }
+    public var description: String { "\(from)\(to)" }
 }

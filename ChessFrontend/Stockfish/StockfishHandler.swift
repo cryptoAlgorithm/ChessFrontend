@@ -20,6 +20,9 @@ final class StockfishHandler: ObservableObject {
 
     public private(set) var options: [UCIResponse.Option] = []
 
+    fileprivate let responseWaitGroup = DispatchGroup()
+    fileprivate let engineInputGroup = DispatchGroup()
+
     /// Initialise an instance of the Stockfish handler
     ///
     /// Will attempt to start and communicate with the stockfish binary in the app's resources
@@ -32,14 +35,15 @@ final class StockfishHandler: ObservableObject {
             let info = try await sendCommandGettingResponse(.uci) { $0 == "uciok" }
             for inf in info {
                 if case let .id(ID) = inf {
-                    if case let .name(name) = ID {
-                        engineName = name
-                    } else if case let .author(author) = ID {
-                        engineAuthor = author
+                    switch ID {
+                    case .name(let name): engineName = name
+                    case .author(let author): engineAuthor = author
                     }
                 }
             }
-            try await waitReady()
+            print("stockfish ready")
+            isInit = true
+            NotificationCenter.default.post(name: .stockfishReady, object: [])
         }
     }
 
@@ -76,14 +80,18 @@ extension StockfishHandler {
         terminatorPredicate: @escaping TerminatorPredicate = defaultTerminatorPredicate
     ) async throws -> [UCIResponse] {
         let handle = outPipe.fileHandleForReading
+        let payloads = UCIResponseAccumulator()
         return try await withCheckedThrowingContinuation { continuation in
+            responseWaitGroup.wait()
+            responseWaitGroup.enter()
             handle.readabilityHandler = { handle in
                 let str = String(decoding: handle.availableData, as: UTF8.self)
-                var payloads: [UCIResponse] = []
                 for chunk in str.components(separatedBy: "\n") {
                     do {
                         if let parsed = try Self.parseResponse(chunk) { // Only append if parsed response isn't nil
-                            payloads.append(parsed)
+                            // Simply wrapping the actor call with a Task probably isn't the proper
+                            // way to get thread-safe code, but it appears to work fine in this situation
+                            Task { await payloads.add(response: parsed) }
                         }
                     } catch {
                         continuation.resume(throwing: error)
@@ -91,8 +99,11 @@ extension StockfishHandler {
                     }
                     if terminatorPredicate(chunk) {
                         handle.readabilityHandler = nil
-                        continuation.resume(returning: payloads)
-                        return
+                        Task {
+                            continuation.resume(returning: await payloads.responses)
+                            self.responseWaitGroup.leave()
+                        }
+                        break
                     }
                 }
             }
@@ -101,6 +112,8 @@ extension StockfishHandler {
 
     private func writeInput(_ input: Data) async throws {
         return try await withCheckedThrowingContinuation { continuation in
+            engineInputGroup.wait()
+            engineInputGroup.enter()
             let writeIO = DispatchIO(type: .stream, fileDescriptor: inPipe.fileHandleForWriting.fileDescriptor, queue: .main) { _ in
                 
             }
@@ -111,6 +124,7 @@ extension StockfishHandler {
                         continuation.resume(throwing: Self.posixErr(error))
                         return
                     }
+                    self.engineInputGroup.leave()
                     continuation.resume()
                 }
             }
@@ -144,6 +158,8 @@ extension StockfishHandler {
             return .id(try UCIDecode.decode(UCIResponse.ID.self, payload: response))
         case "info":
             return .info(try UCIDecode.decode(UCIResponse.Info.self, payload: response))
+        case "bestmove":
+            return .bestMove(try UCIDecode.decode(UCIResponse.BestMove.self, payload: response))
         default:
             return .unknown(response)
         }
@@ -164,6 +180,7 @@ extension StockfishHandler {
         terminatorPredicate: @escaping TerminatorPredicate = defaultTerminatorPredicate
     ) async throws -> [UCIResponse] {
         try await sendCommand(commandName, parameters: parameters)
+        print("waiting for response")
         return try await waitForResponse(terminatorPredicate: terminatorPredicate)
     }
 
@@ -182,7 +199,7 @@ extension StockfishHandler {
         _ commandName: UCICommand,
         parameters: [String : String]? = nil
     ) async throws {
-        var cmd = commandName.rawValue + "\n"
+        var cmd = commandName.rawValue
         // Add parameters if present
         if let parameters = parameters {
             cmd += " "
@@ -190,6 +207,8 @@ extension StockfishHandler {
                 cmd += key + " " + param + " "
             }
         }
+        print("Writing input \(cmd)")
+        cmd += "\n"
         try await writeInput(cmd.data(using: .utf8)!)
     }
 
@@ -212,14 +231,14 @@ extension StockfishHandler {
     public func updatePosition(moves: [Move]) async throws {
         try await sendCommand(
             .position,
-            parameters: ["startpos": moves.map { $0.description }.joined(separator: " ")]
+            parameters: ["startpos moves": moves.map { $0.description }.joined(separator: " ")]
         )
     }
-    
+
     /// Search for a move at a certain depth
     ///
     /// Set the location before using this function with ``StockfishHandler/updatePosition(moves:)``
-    public func search(depth: Int = 20) async throws {
-        
+    public func search(depth: Int = 20) async throws -> [UCIResponse] {
+        try await sendCommandGettingResponse(.go, parameters: ["depth": String(depth)]) { print($0);return $0.hasPrefix("bestmove") }
     }
 }

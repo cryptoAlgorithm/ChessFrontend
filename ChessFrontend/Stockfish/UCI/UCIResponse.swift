@@ -142,6 +142,26 @@ enum UCIResponse {
         }
     }
 
+    /// A best move
+    struct BestMove: UCIDecodable {
+        typealias Key = Keys
+
+        enum Keys: String, CaseIterable {
+            case bestmove
+            case ponder
+        }
+
+        let move: Move
+        let ponder: Move?
+
+        init(_ decoder: UCIDecoder) throws {
+            move = try Move(from: try decoder.decodeString(Keys.bestmove.rawValue))
+            if let ponderLoc = try decoder.decodeStringOptional(Keys.ponder.rawValue) {
+                ponder = try Move(from: ponderLoc)
+            } else { ponder = nil }
+        }
+    }
+
     /// A `readyok` response from the engine
     case ready
 
@@ -157,8 +177,22 @@ enum UCIResponse {
     /// A payload describing an option that can be used to configure various engine parameters
     case option(Option)
 
+    /// The best move as determined by the engine
+    case bestMove(BestMove)
+
     /// If the response couldn't be parsed as any known response type
     ///
     /// Raw response is included in the associated value.
     case unknown(String)
+}
+
+/// Allows mutating an array of ``UCIResponse``s in a thread-safe fashon
+actor UCIResponseAccumulator {
+    /// An array of accumulated ``UCIResponse``s
+    var responses: [UCIResponse] = []
+
+    /// Add a response to the array of responses
+    func add(response: UCIResponse) {
+        responses.append(response)
+    }
 }
