@@ -8,6 +8,8 @@
 import SwiftUI
 
 /// Stores and synchronises the state of the board throughout the app
+///
+/// This also essentially acts as a view model for ``ContentView``
 class BoardState: ObservableObject {
     /// Flattened array of the current board state
     @Published public var board: [Piece] = []
@@ -17,6 +19,16 @@ class BoardState: ObservableObject {
     @Published public var currentSide: PieceSide
     /// Number of "full moves" - incremented after every black move
     @Published public var fullMoves = 1
+
+    /// Advantage of the white player over the black player, in pawns
+    ///
+    /// > A negative score indicates that the black player has an advantage.
+    @Published public var score = 0.0
+    /// Number of moves to a mate
+    ///
+    /// > A positive number indicates the engine can mate the player in a certain number of moves,
+    /// > while a negative score indicates the player can mate the player in a certain number of moves.
+    @Published public var mateMoves: Int?
 
     /// Length of each side of the board
     static public let boardSize = 8
@@ -79,7 +91,12 @@ class BoardState: ObservableObject {
         // Reset moves
         moves = []
         currentSide = .white
+        // Reset scores
+        mateMoves = nil
+        score = 0
+
         Task {
+            // Tell the engine we are starting a new game
             try await ChessFrontendApp.engine!.newGame()
             try await ChessFrontendApp.engine!.waitReady()
         }

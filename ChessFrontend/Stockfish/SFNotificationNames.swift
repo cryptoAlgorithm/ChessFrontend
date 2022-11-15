@@ -18,4 +18,5 @@ import Foundation
 extension NSNotification.Name {
     static let stockfishProcTerminated = Self("stockfish-proc-term")
     static let stockfishReady = Self("stockfish-ready")
+    static let stockfishCPUpdate = Self("stockfish-cp")
 }

@@ -31,6 +31,9 @@
 		DA50B832291FAC6000FA58E4 /* PieceLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA50B831291FAC6000FA58E4 /* PieceLocation.swift */; };
 		DA50B843291FAFF600FA58E4 /* PieceLocationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA50B833291FAEF300FA58E4 /* PieceLocationTests.swift */; };
 		DA50B845291FB22700FA58E4 /* Launcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA50B844291FB22700FA58E4 /* Launcher.swift */; };
+		DA9881D02923307A000A223D /* PlayerScoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA9881CF2923307A000A223D /* PlayerScoreView.swift */; };
+		DA9881D229234520000A223D /* Double+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA9881D129234520000A223D /* Double+.swift */; };
+		DA9881D429234A0B000A223D /* Comparable+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA9881D329234A0B000A223D /* Comparable+.swift */; };
 		DAFF6F132922440F009BE04F /* PieceArray+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAFF6F122922440F009BE04F /* PieceArray+.swift */; };
 /* End PBXBuildFile section */
 
@@ -73,6 +76,9 @@
 		DA50B833291FAEF300FA58E4 /* PieceLocationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieceLocationTests.swift; sourceTree = "<group>"; };
 		DA50B83A291FAFEB00FA58E4 /* ChessFrontendTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ChessFrontendTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA50B844291FB22700FA58E4 /* Launcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Launcher.swift; sourceTree = "<group>"; };
+		DA9881CF2923307A000A223D /* PlayerScoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerScoreView.swift; sourceTree = "<group>"; };
+		DA9881D129234520000A223D /* Double+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+.swift"; sourceTree = "<group>"; };
+		DA9881D329234A0B000A223D /* Comparable+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comparable+.swift"; sourceTree = "<group>"; };
 		DAFF6F122922440F009BE04F /* PieceArray+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PieceArray+.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -121,6 +127,7 @@
 				DA50B80F29150D1B00FA58E4 /* Extensions */,
 				DA50B8092913D81000FA58E4 /* Board */,
 				DA50B8082913CF9800FA58E4 /* Chess */,
+				DA9881CF2923307A000A223D /* PlayerScoreView.swift */,
 				DA50B7F52913CABB00FA58E4 /* ContentView.swift */,
 				DA50B7F32913CABB00FA58E4 /* ChessFrontendApp.swift */,
 				DA50B844291FB22700FA58E4 /* Launcher.swift */,
@@ -167,6 +174,8 @@
 			children = (
 				DA50B81029150D2900FA58E4 /* View+.swift */,
 				DA50B82F291FA8E700FA58E4 /* Character+.swift */,
+				DA9881D129234520000A223D /* Double+.swift */,
+				DA9881D329234A0B000A223D /* Comparable+.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -311,13 +320,16 @@
 				DA50B825291D380900FA58E4 /* UCIDecodable.swift in Sources */,
 				DA50B7F62913CABB00FA58E4 /* ContentView.swift in Sources */,
 				DA50B845291FB22700FA58E4 /* Launcher.swift in Sources */,
+				DA9881D229234520000A223D /* Double+.swift in Sources */,
 				DA50B81129150D2900FA58E4 /* View+.swift in Sources */,
 				DA50B81729154EB900FA58E4 /* StockfishHandler.swift in Sources */,
 				DA50B7F42913CABB00FA58E4 /* ChessFrontendApp.swift in Sources */,
+				DA9881D429234A0B000A223D /* Comparable+.swift in Sources */,
 				DA50B828291DDC1A00FA58E4 /* UCIDecoder.swift in Sources */,
 				DA50B832291FAC6000FA58E4 /* PieceLocation.swift in Sources */,
 				DA50B830291FA8E700FA58E4 /* Character+.swift in Sources */,
 				DA50B81C291625A400FA58E4 /* SFNotificationNames.swift in Sources */,
+				DA9881D02923307A000A223D /* PlayerScoreView.swift in Sources */,
 				DA50B80B2913D82100FA58E4 /* PieceView.swift in Sources */,
 				DA50B81E2917895700FA58E4 /* UCIResponse.swift in Sources */,
 				DA50B823291D378500FA58E4 /* UCIDecode.swift in Sources */,

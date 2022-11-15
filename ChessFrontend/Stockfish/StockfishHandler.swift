@@ -270,6 +270,14 @@ extension StockfishHandler {
     /// Set the location before using this function with ``StockfishHandler/updatePosition(moves:)``
     /// or ``StockfishHandler/updatePosition(fen:)``
     public func search(depth: Int = 20) async throws -> [UCIResponse] {
-        try await sendCommandGettingResponse(.go, parameters: ["depth": String(depth)]) { print($0);return $0.hasPrefix("bestmove") }
+        try await sendCommandGettingResponse(.go, parameters: ["depth": String(depth)]) { respChunk in
+            if let parsed = try? Self.parseResponse(respChunk),
+               case .info(let info) = parsed, let cp = info.centiPawnsScore {
+                DispatchQueue.main.async { // Post a notification to update the UI
+                    NotificationCenter.default.post(name: .stockfishCPUpdate, object: (cp, info.mateMoves))
+                }
+            }
+            return respChunk.hasPrefix("bestmove")
+        }
     }
 }

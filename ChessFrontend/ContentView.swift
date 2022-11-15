@@ -15,8 +15,27 @@ struct ContentView: View {
 
     var body: some View {
         HStack(spacing: 0) {
-            VStack(alignment: .leading) {
+            VStack(alignment: .leading, spacing: 12) {
                 Spacer()
+                if board.currentSide == .black {
+                    HStack(spacing: 8) {
+                        ProgressView().progressViewStyle(.circular).controlSize(.small)
+                        Text("Thinking...")
+                    }
+                }
+                Text("Bot").font(.largeTitle).fontWeight(.black)
+            }
+            .padding(24)
+            .frame(minWidth: 200, maxWidth: .infinity, alignment: .leading)
+
+            ChessView(moveDisabled: board.currentSide == .black)
+                .environmentObject(board)
+                .frame(width: 500)
+                .fixedSize()
+                .padding(.vertical, 16)
+                .background(Rectangle().fill(.red.opacity(0.4)).scaleEffect(1.07).blur(radius: 56))
+
+            VStack(alignment: .trailing, spacing: 12) {
                 GroupBox {
                     if board.moves.isEmpty {
                         Text("No moves yet").font(.caption).frame(maxWidth: .infinity)
@@ -31,21 +50,6 @@ struct ContentView: View {
                 } label: {
                     Label("Move History", systemImage: "arrowshape.turn.up.backward.badge.clock")
                 }
-                if board.currentSide == .black {
-                    Text("Making move...")
-                }
-                Text("Bot").font(.largeTitle).fontWeight(.black)
-            }
-            .padding(24)
-            .frame(minWidth: 200, maxWidth: .infinity, alignment: .leading)
-
-            ChessView(moveDisabled: board.currentSide == .black)
-                .frame(width: 500)
-                .fixedSize()
-                .padding(.vertical, 16)
-                .background(Rectangle().fill(.red.opacity(0.4)).scaleEffect(1.07).blur(radius: 56))
-
-            VStack(alignment: .trailing) {
                 Spacer()
                 if board.currentSide == .white {
                     Text("Your turn")
@@ -56,8 +60,17 @@ struct ContentView: View {
             .frame(minWidth: 200, maxWidth: .infinity, alignment: .trailing)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .padding(.top, 16)
         .background(.black)
-        .environmentObject(board)
+        .overlay(alignment: .top) {
+            PlayerScoreView(score: board.score, mateIn: nil)
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .stockfishCPUpdate), perform: { out in
+            if let obj = out.object, let (score, mateIn) = obj as? (Int, Int?) {
+                board.score = Double(score) / -100.0 // Convert centipawns to pawns and negate score
+                board.mateMoves = mateIn
+            }
+        })
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 Button {
