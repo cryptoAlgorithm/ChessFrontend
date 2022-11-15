@@ -140,7 +140,10 @@ enum UCIResponse {
             case nodes
             case pv // Best play found
             case multiPV = "multipv"
-            case score
+            case centiPawns = "cp"
+            case mateMoves = "mate"
+            case lowerbound
+            case upperbound
             case currentMove = "currmove"
             case currentMoveNumber = "currmovenumber"
             case hashFull = "hashfull"
@@ -155,6 +158,8 @@ enum UCIResponse {
         let depth: Int?
         let currentMove: Move?
         let currentMoveNumber: Int?
+        let centiPawnsScore: Int?
+        let mateMoves: Int?
 
         init(_ decoder: UCIDecoder) throws {
             depth = try decoder.decodeIntOptional(Keys.depth.rawValue)
@@ -162,6 +167,8 @@ enum UCIResponse {
                 currentMove = try Move(from: currMove)
             } else { currentMove = nil }
             currentMoveNumber = try decoder.decodeIntOptional(Keys.currentMoveNumber.rawValue)
+            centiPawnsScore = try decoder.decodeIntOptional(Keys.centiPawns.rawValue)
+            mateMoves = try decoder.decodeIntOptional(Keys.mateMoves.rawValue)
         }
     }
 

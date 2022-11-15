@@ -20,8 +20,7 @@ final class StockfishHandler: ObservableObject {
 
     public private(set) var options: [UCIResponse.Option] = []
 
-    fileprivate let responseWaitGroup = DispatchGroup()
-    fileprivate let engineInputGroup = DispatchGroup()
+    fileprivate let engineIOGroup = DispatchGroup()
 
     /// Initialise an instance of the Stockfish handler
     ///
@@ -77,20 +76,28 @@ final class StockfishHandler: ObservableObject {
 
 extension StockfishHandler {
     fileprivate func waitForResponse(
-        terminatorPredicate: @escaping TerminatorPredicate = defaultTerminatorPredicate
+        terminatorPredicate: @escaping TerminatorPredicate = defaultTerminatorPredicate,
+        useGroup: Bool = true
     ) async throws -> [UCIResponse] {
         let handle = outPipe.fileHandleForReading
         let payloads = UCIResponseAccumulator()
+        if useGroup {
+            engineIOGroup.wait()
+            engineIOGroup.enter()
+        }
+
         return try await withCheckedThrowingContinuation { continuation in
-            responseWaitGroup.wait()
-            responseWaitGroup.enter()
-            print("entering group")
             handle.readabilityHandler = { handle in
-                /*if handle.availableData.isEmpty {
+                // Must assign to a var because reading this property removes the read data from the buffer,
+                // so subsequent calls don't get any more data
+                let data = handle.availableData
+                if data.isEmpty {
                     handle.readabilityHandler = nil
                     continuation.resume(returning: [])
-                }*/
-                let str = String(decoding: handle.availableData, as: UTF8.self)
+                    if useGroup { self.engineIOGroup.leave() }
+                    return
+                }
+                let str = String(decoding: data, as: UTF8.self)
                 for chunk in str.components(separatedBy: "\n") {
                     do {
                         if let parsed = try Self.parseResponse(chunk) { // Only append if parsed response isn't nil
@@ -102,13 +109,14 @@ extension StockfishHandler {
                         print("throwing error \(error)")
                         handle.readabilityHandler = nil
                         continuation.resume(throwing: error)
+                        if useGroup { self.engineIOGroup.leave() }
                         return
                     }
                     if terminatorPredicate(chunk) {
                         handle.readabilityHandler = nil
                         Task {
                             continuation.resume(returning: await payloads.responses)
-                            self.responseWaitGroup.leave()
+                            if useGroup { self.engineIOGroup.leave() }
                         }
                         break
                     }
@@ -119,8 +127,6 @@ extension StockfishHandler {
 
     private func writeInput(_ input: Data) async throws {
         return try await withCheckedThrowingContinuation { continuation in
-            engineInputGroup.wait()
-            engineInputGroup.enter()
             let writeIO = DispatchIO(type: .stream, fileDescriptor: inPipe.fileHandleForWriting.fileDescriptor, queue: .main) { _ in
                 
             }
@@ -131,7 +137,6 @@ extension StockfishHandler {
                         continuation.resume(throwing: Self.posixErr(error))
                         return
                     }
-                    self.engineInputGroup.leave()
                     continuation.resume()
                 }
             }
@@ -186,9 +191,10 @@ extension StockfishHandler {
         parameters: [String : String]? = nil,
         terminatorPredicate: @escaping TerminatorPredicate = defaultTerminatorPredicate
     ) async throws -> [UCIResponse] {
-        try await sendCommand(commandName, parameters: parameters)
-        print("waiting for response")
-        return try await waitForResponse(terminatorPredicate: terminatorPredicate)
+        defer { engineIOGroup.leave() } // Leave group once we're done
+        try await sendCommand(commandName, parameters: parameters, leaveGroup: false)
+        let resp = try await waitForResponse(terminatorPredicate: terminatorPredicate, useGroup: false)
+        return resp
     }
 
     /// Send a command to the engine
@@ -204,8 +210,13 @@ extension StockfishHandler {
     /// - ``sendCommandGettingResponse(_:parameters:terminatorPredicate:)``
     public func sendCommand(
         _ commandName: UCICommand,
-        parameters: [String : String]? = nil
+        parameters: [String : String]? = nil,
+        leaveGroup: Bool = true
     ) async throws {
+        engineIOGroup.wait()
+        engineIOGroup.enter()
+        defer { if leaveGroup { engineIOGroup.leave() }}
+
         var cmd = commandName.rawValue
         // Add parameters if present
         if let parameters = parameters {
