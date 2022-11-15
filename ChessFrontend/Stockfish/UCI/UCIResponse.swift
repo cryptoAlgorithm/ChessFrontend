@@ -41,7 +41,7 @@ enum UCIResponse {
     ///
     /// > Tip: Details about each case's associated value(s) are included within their
     /// > documentation discussion. Click on a case to view more details.
-    enum Option: UCIDecodable {
+    enum Option: UCIDecodable, Identifiable {
         typealias Key = Keys
 
         enum Keys: String, CaseIterable {
@@ -85,6 +85,24 @@ enum UCIResponse {
                 self = .combo(name: name, options: try decoder.decodeArray(Keys.values.rawValue))
             default:
                 self = .unknown(name: name, type: type)
+            }
+        }
+
+        // This is kinda silly
+        var id: String {
+            switch self {
+            case .button(name: let name):
+                return name
+            case .check(name: let name, default: _):
+                return name
+            case .combo(name: let name, options: _):
+                return name
+            case .spin(name: let name, default: _, min: _, max: _):
+                return name
+            case .string(name: let name, default: _):
+                return name
+            case .unknown(name: let name, type: _):
+                return name
             }
         }
 

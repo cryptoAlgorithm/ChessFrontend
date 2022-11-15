@@ -31,6 +31,8 @@ final class StockfishHandler: ObservableObject {
 
         Task {
             _ = try await waitForResponse()
+
+            // Get and decode options
             let info = try await sendCommandGettingResponse(.uci) { $0 == "uciok" }
             for inf in info {
                 if case let .id(ID) = inf {
@@ -38,11 +40,21 @@ final class StockfishHandler: ObservableObject {
                     case .name(let name): engineName = name
                     case .author(let author): engineAuthor = author
                     }
+                } else if case let .option(option) = inf {
+                    print(option)
+                    options.append(option)
                 }
             }
+
+            try await ChessFrontendApp.engine!.setOptionValue("Threads", value: "10")
+
             print("stockfish ready")
             isInit = true
-            NotificationCenter.default.post(name: .stockfishReady, object: [])
+
+            DispatchQueue.main.async { [weak self] in
+                NotificationCenter.default.post(name: .stockfishOptionsUpdate, object: self?.options)
+                NotificationCenter.default.post(name: .stockfishReady, object: nil)
+            }
         }
     }
 
@@ -279,5 +291,15 @@ extension StockfishHandler {
             }
             return respChunk.hasPrefix("bestmove")
         }
+    }
+
+    /// Update the value of an option in the engine
+    ///
+    /// This method expects a valid name and value for the option and does _no_ validation.
+    public func setOptionValue(_ name: String, value: String) async throws {
+        try await sendCommand(.setOption, parameters: [
+            "name": name,
+            "value": value
+        ])
     }
 }

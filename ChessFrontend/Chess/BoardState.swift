@@ -16,7 +16,7 @@ class BoardState: ObservableObject {
     /// Move history of both players
     @Published public var moves: [Move] = []
     /// Side that will make the next move
-    @Published public var currentSide: PieceSide
+    @Published public var currentSide: PieceSide = .white
     /// Number of "full moves" - incremented after every black move
     @Published public var fullMoves = 1
 
@@ -32,6 +32,9 @@ class BoardState: ObservableObject {
 
     /// Depth to use when searching for a move
     @Published public var searchDepth = 20
+
+    /// If the underlying Stockfish engine is ready
+    @Published public var engineReady = false
 
     /// Length of each side of the board
     static public let boardSize = 8
@@ -134,9 +137,10 @@ class BoardState: ObservableObject {
         }
     }
 
-    /// Create an instance of this class
-    @MainActor init() {
+    /// Initialises the base board state, should be called only after the engine is ready
+    @MainActor func engineReadyInit() {
         currentSide = .white
         resetBoard()
+        engineReady = true
     }
 }
