@@ -283,6 +283,7 @@ extension StockfishHandler {
     /// or ``StockfishHandler/updatePosition(fen:)``
     public func search(depth: Int = 20) async throws -> [UCIResponse] {
         try await sendCommandGettingResponse(.go, parameters: ["depth": String(depth)]) { respChunk in
+            print(respChunk)
             if let parsed = try? Self.parseResponse(respChunk),
                case .info(let info) = parsed, let cp = info.centiPawnsScore {
                 DispatchQueue.main.async { // Post a notification to update the UI

@@ -16,6 +16,10 @@ struct Options: View {
                 Knob(name: name, def: def, min: min, max: max) { newValue in
                     Task { try await ChessFrontendApp.engine!.setOptionValue(name, value: String(newValue)) }
                 }
+            } else if case .check(name: let name, default: let def) = elem {
+                Check(name: name, def: def) { newValue in
+                    Task { try await ChessFrontendApp.engine!.setOptionValue(name, value: String(newValue)) }
+                }
             }
         }
     }

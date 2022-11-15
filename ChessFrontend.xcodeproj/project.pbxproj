@@ -40,6 +40,7 @@
 		DA9881F92923B333000A223D /* Options.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA9881F82923B333000A223D /* Options.swift */; };
 		DA9881FB2923B33E000A223D /* Knob.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA9881FA2923B33E000A223D /* Knob.swift */; };
 		DA9881FD2923B535000A223D /* Int+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA9881FC2923B535000A223D /* Int+.swift */; };
+		DA9881FF2923D995000A223D /* Check.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA9881FE2923D995000A223D /* Check.swift */; };
 		DAFF6F132922440F009BE04F /* PieceArray+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAFF6F122922440F009BE04F /* PieceArray+.swift */; };
 /* End PBXBuildFile section */
 
@@ -91,6 +92,7 @@
 		DA9881F82923B333000A223D /* Options.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Options.swift; sourceTree = "<group>"; };
 		DA9881FA2923B33E000A223D /* Knob.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Knob.swift; sourceTree = "<group>"; };
 		DA9881FC2923B535000A223D /* Int+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+.swift"; sourceTree = "<group>"; };
+		DA9881FE2923D995000A223D /* Check.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Check.swift; sourceTree = "<group>"; };
 		DAFF6F122922440F009BE04F /* PieceArray+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PieceArray+.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -232,6 +234,7 @@
 			children = (
 				DA9881F82923B333000A223D /* Options.swift */,
 				DA9881FA2923B33E000A223D /* Knob.swift */,
+				DA9881FE2923D995000A223D /* Check.swift */,
 			);
 			path = Engine;
 			sourceTree = "<group>";
@@ -345,6 +348,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DA9881FF2923D995000A223D /* Check.swift in Sources */,
 				DA50B82E291F752A00FA58E4 /* Move.swift in Sources */,
 				DAFF6F132922440F009BE04F /* PieceArray+.swift in Sources */,
 				DA50B8072913CF8E00FA58E4 /* Piece.swift in Sources */,

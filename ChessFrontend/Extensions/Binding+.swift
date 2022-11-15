@@ -27,4 +27,14 @@ public extension Binding {
             set: { floatBinding.wrappedValue = TFloat($0) }
         )
     }
+
+    /// Convert any `Int` binding type to a `Bool` type
+    static func convert<TInt>(
+        from intBinding: Binding<TInt>
+    ) -> Binding<Bool> where TInt: BinaryInteger {
+        Binding<Bool> (
+            get: { intBinding.wrappedValue == 1 ? true : false },
+            set: { intBinding.wrappedValue = $0 ? 1 : 0 }
+        )
+    }
 }
