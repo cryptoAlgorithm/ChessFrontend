@@ -205,6 +205,7 @@ extension StockfishHandler {
     /// - Parameters:
     ///   - commandName: The command's name (first token in UCI string, not the whole UCI command)
     ///   - parameters: Command parameters as a dictionary
+    ///   - leaveGroup: If the `engineIOGroup` should be left after this method completes
     ///
     /// ## See Also
     /// - ``sendCommandGettingResponse(_:parameters:terminatorPredicate:)``
@@ -225,7 +226,8 @@ extension StockfishHandler {
                 cmd += key + " " + param + " "
             }
         }
-        print("Writing input \(cmd)")
+        cmd = cmd.trimmingCharacters(in: .whitespacesAndNewlines) // Get rid of any erroneous characters surrounding the command
+        print("Writing input '\(cmd)'")
         cmd += "\n"
         try await writeInput(cmd.data(using: .utf8)!)
     }
@@ -266,6 +268,7 @@ extension StockfishHandler {
     /// Search for a move at a certain depth
     ///
     /// Set the location before using this function with ``StockfishHandler/updatePosition(moves:)``
+    /// or ``StockfishHandler/updatePosition(fen:)``
     public func search(depth: Int = 20) async throws -> [UCIResponse] {
         try await sendCommandGettingResponse(.go, parameters: ["depth": String(depth)]) { print($0);return $0.hasPrefix("bestmove") }
     }
