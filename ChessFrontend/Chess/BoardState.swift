@@ -56,6 +56,8 @@ class BoardState: ObservableObject {
                     fenPieces += String(emptySpaces)
                     emptySpaces = 0
                 }
+                // Don't append a trailing /
+                guard idx + 1 != board.count else { break }
                 fenPieces += "/"
             }
         }
