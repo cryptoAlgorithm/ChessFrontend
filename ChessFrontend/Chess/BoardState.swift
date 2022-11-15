@@ -30,6 +30,9 @@ class BoardState: ObservableObject {
     /// > while a negative score indicates the player can mate the player in a certain number of moves.
     @Published public var mateMoves: Int?
 
+    /// Depth to use when searching for a move
+    @Published public var searchDepth = 20
+
     /// Length of each side of the board
     static public let boardSize = 8
 
@@ -117,7 +120,7 @@ class BoardState: ObservableObject {
         Task {
             try await ChessFrontendApp.engine!.updatePosition(fen: fen)
             // Force-unwrap because we shouldn't have gotten here if the engine couldn't be init
-            let infos = try await ChessFrontendApp.engine!.search(depth: 20)
+            let infos = try await ChessFrontendApp.engine!.search(depth: searchDepth)
             print("updated moves")
             for info in infos {
                 if case .bestMove(let bestMove) = info {

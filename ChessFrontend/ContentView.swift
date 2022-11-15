@@ -13,17 +13,56 @@ struct ContentView: View {
 
     @StateObject private var board = BoardState()
 
+    private var engineSidebar: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            GroupBox {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Search depth:").font(.callout)
+                    // Don't use a stepped slider since there would be way too many steps
+                    Slider(value: .convert(from: $board.searchDepth), in: 1...30) {
+                        Text(String(format: "%02d", board.searchDepth)).font(.monospaced(.caption)())
+                    }.controlSize(.small)
+                }
+            } label: {
+                Label("Configuration", systemImage: "gearshape")
+            }
+            Spacer()
+            if board.currentSide == .black {
+                PlayerTurnPill(isBot: true).transition(.asymmetricLeadingPush)
+            }
+            Text("Bot").font(.largeTitle).fontWeight(.black)
+        }
+        .padding(16)
+    }
+
+    private var humanSidebar: some View {
+        VStack(alignment: .trailing, spacing: 8) {
+            GroupBox {
+                if board.moves.isEmpty {
+                    Text("No moves yet").font(.caption).frame(maxWidth: .infinity)
+                } else {
+                    ScrollView {
+                        Text(board.moves.map { $0.description }.joined(separator: ", "))
+                            .font(.monospaced(.body)())
+                            .multilineTextAlignment(.leading)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                    }.frame(maxHeight: 100)
+                }
+            } label: {
+                Label("Move History", systemImage: "arrowshape.turn.up.backward.badge.clock")
+            }
+            Spacer()
+            if board.currentSide == .white {
+                PlayerTurnPill(isBot: false).transition(.asymmetricTrailingPush)
+            }
+            Text("You").font(.largeTitle).fontWeight(.black)
+        }
+        .padding(16)
+    }
+
     var body: some View {
         HStack(spacing: 0) {
-            VStack(alignment: .leading, spacing: 8) {
-                Spacer()
-                if board.currentSide == .black {
-                    PlayerTurnPill(isBot: true).transition(.asymmetricLeadingPush)
-                }
-                Text("Bot").font(.largeTitle).fontWeight(.black)
-            }
-            .padding(24)
-            .frame(minWidth: 200, maxWidth: .infinity, alignment: .leading)
+            engineSidebar.frame(minWidth: 200, maxWidth: .infinity, alignment: .leading)
 
             ChessView(moveDisabled: board.currentSide == .black)
                 .environmentObject(board)
@@ -32,29 +71,7 @@ struct ContentView: View {
                 .padding(.vertical, 16)
                 .background(Rectangle().fill(.red.opacity(0.4)).scaleEffect(1.07).blur(radius: 56))
 
-            VStack(alignment: .trailing, spacing: 8) {
-                GroupBox {
-                    if board.moves.isEmpty {
-                        Text("No moves yet").font(.caption).frame(maxWidth: .infinity)
-                    } else {
-                        ScrollView {
-                            Text(board.moves.map { $0.description }.joined(separator: ", "))
-                                .font(.monospaced(.body)())
-                                .multilineTextAlignment(.leading)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                        }.frame(maxHeight: 100)
-                    }
-                } label: {
-                    Label("Move History", systemImage: "arrowshape.turn.up.backward.badge.clock")
-                }
-                Spacer()
-                if board.currentSide == .white {
-                    PlayerTurnPill(isBot: false).transition(.asymmetricTrailingPush)
-                }
-                Text("You").font(.largeTitle).fontWeight(.black)
-            }
-            .padding(24)
-            .frame(minWidth: 200, maxWidth: .infinity, alignment: .trailing)
+            humanSidebar.frame(minWidth: 200, maxWidth: .infinity, alignment: .trailing)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding(.top, 16)

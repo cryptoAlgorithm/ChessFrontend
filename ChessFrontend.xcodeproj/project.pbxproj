@@ -36,6 +36,7 @@
 		DA9881D429234A0B000A223D /* Comparable+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA9881D329234A0B000A223D /* Comparable+.swift */; };
 		DA9881D6292358CD000A223D /* PlayerTurnPill.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA9881D5292358CD000A223D /* PlayerTurnPill.swift */; };
 		DA9881D829235ED1000A223D /* AnyTransition+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA9881D729235ED1000A223D /* AnyTransition+.swift */; };
+		DA9881F4292377BF000A223D /* Binding+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA9881F3292377BF000A223D /* Binding+.swift */; };
 		DAFF6F132922440F009BE04F /* PieceArray+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAFF6F122922440F009BE04F /* PieceArray+.swift */; };
 /* End PBXBuildFile section */
 
@@ -83,6 +84,7 @@
 		DA9881D329234A0B000A223D /* Comparable+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comparable+.swift"; sourceTree = "<group>"; };
 		DA9881D5292358CD000A223D /* PlayerTurnPill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerTurnPill.swift; sourceTree = "<group>"; };
 		DA9881D729235ED1000A223D /* AnyTransition+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AnyTransition+.swift"; sourceTree = "<group>"; };
+		DA9881F3292377BF000A223D /* Binding+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Binding+.swift"; sourceTree = "<group>"; };
 		DAFF6F122922440F009BE04F /* PieceArray+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PieceArray+.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -182,6 +184,7 @@
 				DA9881D129234520000A223D /* Double+.swift */,
 				DA9881D329234A0B000A223D /* Comparable+.swift */,
 				DA9881D729235ED1000A223D /* AnyTransition+.swift */,
+				DA9881F3292377BF000A223D /* Binding+.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -337,6 +340,7 @@
 				DA50B830291FA8E700FA58E4 /* Character+.swift in Sources */,
 				DA50B81C291625A400FA58E4 /* SFNotificationNames.swift in Sources */,
 				DA9881D02923307A000A223D /* PlayerScoreView.swift in Sources */,
+				DA9881F4292377BF000A223D /* Binding+.swift in Sources */,
 				DA9881D6292358CD000A223D /* PlayerTurnPill.swift in Sources */,
 				DA50B80B2913D82100FA58E4 /* PieceView.swift in Sources */,
 				DA50B81E2917895700FA58E4 /* UCIResponse.swift in Sources */,
