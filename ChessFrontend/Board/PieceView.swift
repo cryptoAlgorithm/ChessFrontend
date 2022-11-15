@@ -39,7 +39,7 @@ struct PieceView: View {
                 } else { EmptyView() }
             }
             .aspectRatio(1, contentMode: .fit)
-            .onDrag(if: item.type != .empty) {
+            .onDrag(if: item.type != .empty && item.side == .white) {
                 dragged()
                 return NSItemProvider(
                     item: NSString(utf8String: item.type.rawValue),

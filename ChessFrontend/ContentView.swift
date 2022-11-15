@@ -15,13 +15,10 @@ struct ContentView: View {
 
     var body: some View {
         HStack(spacing: 0) {
-            VStack(alignment: .leading, spacing: 12) {
+            VStack(alignment: .leading, spacing: 8) {
                 Spacer()
                 if board.currentSide == .black {
-                    HStack(spacing: 8) {
-                        ProgressView().progressViewStyle(.circular).controlSize(.small)
-                        Text("Thinking...")
-                    }
+                    PlayerTurnPill(isBot: true).transition(.asymmetricLeadingPush)
                 }
                 Text("Bot").font(.largeTitle).fontWeight(.black)
             }
@@ -35,7 +32,7 @@ struct ContentView: View {
                 .padding(.vertical, 16)
                 .background(Rectangle().fill(.red.opacity(0.4)).scaleEffect(1.07).blur(radius: 56))
 
-            VStack(alignment: .trailing, spacing: 12) {
+            VStack(alignment: .trailing, spacing: 8) {
                 GroupBox {
                     if board.moves.isEmpty {
                         Text("No moves yet").font(.caption).frame(maxWidth: .infinity)
@@ -52,7 +49,7 @@ struct ContentView: View {
                 }
                 Spacer()
                 if board.currentSide == .white {
-                    Text("Your turn")
+                    PlayerTurnPill(isBot: false).transition(.asymmetricTrailingPush)
                 }
                 Text("You").font(.largeTitle).fontWeight(.black)
             }

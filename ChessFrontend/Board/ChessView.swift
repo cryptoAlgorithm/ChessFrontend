@@ -32,6 +32,7 @@ struct ChessView: View {
                 } dropped: {
                     guard let draggingIdx = draggingIdx else { return false }
                     guard idx != draggingIdx else { return false }
+                    guard !moveDisabled else { return false }
                     withAnimation {
                         board.makeMove(from: draggingIdx, to: idx)
                     }
@@ -46,8 +47,16 @@ struct ChessView: View {
     }
 }
 
+fileprivate struct MockChessPreviewContainer: View {
+    @StateObject private var previewBoard = BoardState()
+
+    var body: some View {
+        ChessView(moveDisabled: false).environmentObject(previewBoard)
+    }
+}
+
 struct ChessView_Previews: PreviewProvider {
     static var previews: some View {
-        ChessView(moveDisabled: false)
+        MockChessPreviewContainer()
     }
 }
