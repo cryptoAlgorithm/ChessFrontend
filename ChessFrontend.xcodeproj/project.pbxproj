@@ -32,6 +32,7 @@
 		DA50B843291FAFF600FA58E4 /* PieceLocationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA50B833291FAEF300FA58E4 /* PieceLocationTests.swift */; };
 		DA50B845291FB22700FA58E4 /* Launcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA50B844291FB22700FA58E4 /* Launcher.swift */; };
 		DA6AE6C32924DB8D00B13F3F /* SwiftSerial in Frameworks */ = {isa = PBXBuildFile; productRef = DA6AE6C22924DB8D00B13F3F /* SwiftSerial */; };
+		DA6AE6C52925057B00B13F3F /* BoardBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6AE6C42925057B00B13F3F /* BoardBackground.swift */; };
 		DA9881D02923307A000A223D /* PlayerScoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA9881CF2923307A000A223D /* PlayerScoreView.swift */; };
 		DA9881D229234520000A223D /* Double+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA9881D129234520000A223D /* Double+.swift */; };
 		DA9881D429234A0B000A223D /* Comparable+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA9881D329234A0B000A223D /* Comparable+.swift */; };
@@ -84,6 +85,7 @@
 		DA50B833291FAEF300FA58E4 /* PieceLocationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieceLocationTests.swift; sourceTree = "<group>"; };
 		DA50B83A291FAFEB00FA58E4 /* ChessFrontendTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ChessFrontendTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA50B844291FB22700FA58E4 /* Launcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Launcher.swift; sourceTree = "<group>"; };
+		DA6AE6C42925057B00B13F3F /* BoardBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardBackground.swift; sourceTree = "<group>"; };
 		DA9881CF2923307A000A223D /* PlayerScoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerScoreView.swift; sourceTree = "<group>"; };
 		DA9881D129234520000A223D /* Double+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+.swift"; sourceTree = "<group>"; };
 		DA9881D329234A0B000A223D /* Comparable+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comparable+.swift"; sourceTree = "<group>"; };
@@ -179,6 +181,7 @@
 			isa = PBXGroup;
 			children = (
 				DA50B8022913CB0A00FA58E4 /* ChessView.swift */,
+				DA6AE6C42925057B00B13F3F /* BoardBackground.swift */,
 				DA50B80A2913D82100FA58E4 /* PieceView.swift */,
 				DA50B81229151B3C00FA58E4 /* ChessViewController.swift */,
 				DA50B82D291F752A00FA58E4 /* Move.swift */,
@@ -380,6 +383,7 @@
 				DA50B830291FA8E700FA58E4 /* Character+.swift in Sources */,
 				DA50B81C291625A400FA58E4 /* EngineNotifNames.swift in Sources */,
 				DA9881D02923307A000A223D /* PlayerScoreView.swift in Sources */,
+				DA6AE6C52925057B00B13F3F /* BoardBackground.swift in Sources */,
 				DA9881F4292377BF000A223D /* Binding+.swift in Sources */,
 				DA9881D6292358CD000A223D /* PlayerTurnPill.swift in Sources */,
 				DA50B80B2913D82100FA58E4 /* PieceView.swift in Sources */,

@@ -8,15 +8,14 @@
 import SwiftUI
 
 // Adapted from a random StackOverflow answer
-struct Draggable<Preview>: ViewModifier where Preview: View {
+struct Draggable: ViewModifier {
     let condition: Bool
     let data: () -> NSItemProvider
-    @ViewBuilder let preview: () -> Preview
 
     @ViewBuilder
     func body(content: Content) -> some View {
         if condition {
-            content.onDrag(data, preview: preview)
+            content.onDrag(data)
         } else {
             content
         }
@@ -24,11 +23,10 @@ struct Draggable<Preview>: ViewModifier where Preview: View {
 }
 
 extension View {
-    public func onDrag<Preview>(
+    public func onDrag(
         if condition: Bool,
-        data: @escaping () -> NSItemProvider,
-        @ViewBuilder preview: @escaping () -> Preview
-    ) -> some View where Preview: View {
-        self.modifier(Draggable(condition: condition, data: data, preview: preview))
+        data: @escaping () -> NSItemProvider
+    ) -> some View {
+        self.modifier(Draggable(condition: condition, data: data))
     }
 }
