@@ -9,7 +9,7 @@ import SwiftUI
 
 /// The main app entrypoint when running normally
 struct ChessFrontendApp: App {
-    static let engine = try? StockfishHandler()
+    static let engine = try? EngineHandler(binaryURL: Bundle.main.url(forResource: "stockfish", withExtension: "")!)
 
     @State private var initError: String?
 
@@ -17,7 +17,7 @@ struct ChessFrontendApp: App {
         WindowGroup {
             ContentView()
                 .navigationTitle("Chess (real)")
-                .onReceive(NotificationCenter.default.publisher(for: .stockfishProcTerminated)) { _ in
+                .onReceive(NotificationCenter.default.publisher(for: .engineProcTerminated)) { _ in
                     initError = "Stockfish process terminated unexpectedly"
                 }
                 .onAppear {

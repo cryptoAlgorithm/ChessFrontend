@@ -1,5 +1,5 @@
 //
-//  StockfishHandler.swift
+//  EngineHandler.swift
 //  ChessFrontend
 //
 //  Created by Vincent Kwok on 4/11/22.
@@ -8,7 +8,7 @@
 import Foundation
 
 /// Facilitates various interactions with the Stockfish chess engine
-final class StockfishHandler: ObservableObject {
+final class EngineHandler: ObservableObject {
     fileprivate let proc = Process()
     fileprivate let inPipe = Pipe()
     fileprivate let outPipe = Pipe()
@@ -22,11 +22,15 @@ final class StockfishHandler: ObservableObject {
 
     fileprivate let engineIOGroup = DispatchGroup()
 
-    /// Initialise an instance of the Stockfish handler
+    /// Initialise an instance of this class to interface with an UCI chess engine
     ///
-    /// Will attempt to start and communicate with the stockfish binary in the app's resources
-    init() throws {
-        try initProc()
+    /// Will attempt to start and communicate with the supplied binary thru the UCI
+    /// protocol.
+    ///
+    /// - Parameter binaryURL: URL to engine binary
+    /// - Throws: If a process or decoding error occurred during initialisation
+    init(binaryURL: URL) throws {
+        try initProc(with: binaryURL)
         try proc.run()
 
         Task {
@@ -47,12 +51,11 @@ final class StockfishHandler: ObservableObject {
             }
 
             try await ChessFrontendApp.engine!.setOptionValue("Threads", value: String(ProcessInfo().activeProcessorCount))
-            print("stockfish ready")
             isInit = true
 
             DispatchQueue.main.async { [weak self] in
-                NotificationCenter.default.post(name: .stockfishOptionsUpdate, object: self?.options)
-                NotificationCenter.default.post(name: .stockfishReady, object: nil)
+                NotificationCenter.default.post(name: .engineOptionsUpdate, object: self?.options)
+                NotificationCenter.default.post(name: .engineReady, object: nil)
             }
         }
     }
@@ -66,10 +69,12 @@ final class StockfishHandler: ObservableObject {
         NSError(domain: NSPOSIXErrorDomain, code: Int(error), userInfo: nil)
     }
 
-    /// Initialise the Stockfish process
-    private func initProc() throws {
+    /// Initialise the engine process
+    ///
+    /// - Parameter executable: URL to engine binary
+    private func initProc(with executable: URL) throws {
         // Set the executable URL, terminating if the stockfish binary couldn't be found
-        proc.executableURL = Bundle.main.url(forResource: "stockfish", withExtension: "")!
+        proc.executableURL = executable
         proc.standardInput = inPipe
         proc.standardOutput = outPipe
 
@@ -79,13 +84,13 @@ final class StockfishHandler: ObservableObject {
 
         proc.terminationHandler = { _ in
             DispatchQueue.main.async {
-                NotificationCenter.default.post(name: .stockfishProcTerminated, object: nil)
+                NotificationCenter.default.post(name: .engineProcTerminated, object: nil)
             }
         }
     }
 }
 
-extension StockfishHandler {
+extension EngineHandler {
     fileprivate func waitForResponse(
         terminatorPredicate: @escaping TerminatorPredicate = defaultTerminatorPredicate,
         useGroup: Bool = true
@@ -166,7 +171,7 @@ extension StockfishHandler {
 typealias TerminatorPredicate = (_ chunk: String) -> Bool
 
 // MARK: - Command parser wrapper
-extension StockfishHandler {
+extension EngineHandler {
     static fileprivate func parseResponse(_ response: String) throws -> UCIResponse? {
         guard !response.isEmpty else { return nil }
         let tokens = response.components(separatedBy: " ")
@@ -190,7 +195,7 @@ extension StockfishHandler {
 }
 
 // MARK: - Public API
-extension StockfishHandler {
+extension EngineHandler {
     /// Send a command to the engine through stdin and get its response
     ///
     /// - Parameters:
@@ -245,6 +250,9 @@ extension StockfishHandler {
 
     // MARK: Command aliases
     /// Wait for the engine to be ready, commonly used after long-running commands
+    ///
+    /// This _should_ be called by implementations after ``newGame()`` and `uci` commands,
+    /// which do not explicitly output anything after they have successfully completed.
     public func waitReady() async throws {
         _ = try await sendCommandGettingResponse(.isReady) { $0 == "readyok" }
     }
@@ -286,7 +294,7 @@ extension StockfishHandler {
             if let parsed = try? Self.parseResponse(respChunk),
                case .info(let info) = parsed, let cp = info.centiPawnsScore {
                 DispatchQueue.main.async { // Post a notification to update the UI
-                    NotificationCenter.default.post(name: .stockfishCPUpdate, object: (cp, info.mateMoves))
+                    NotificationCenter.default.post(name: .engineCPUpdate, object: (cp, info.mateMoves))
                 }
             }
             return respChunk.hasPrefix("bestmove")

@@ -110,18 +110,18 @@ struct ContentView: View {
         .overlay(alignment: .top) {
             PlayerScoreView(score: board.score, mateIn: nil)
         }
-        .onReceive(NotificationCenter.default.publisher(for: .stockfishCPUpdate)) { out in
+        .onReceive(NotificationCenter.default.publisher(for: .engineCPUpdate)) { out in
             if let obj = out.object, let (score, mateIn) = obj as? (Int, Int?) {
                 board.score = Double(score) / -100.0 // Convert centipawns to pawns and negate score
                 board.mateMoves = mateIn
             }
         }
-        .onReceive(NotificationCenter.default.publisher(for: .stockfishOptionsUpdate)) { options in
+        .onReceive(NotificationCenter.default.publisher(for: .engineOptionsUpdate)) { options in
             if let options = options.object as? [UCIResponse.Option] {
                 engineOptions = options
             }
         }
-        .onReceive(NotificationCenter.default.publisher(for: .stockfishReady)) { _ in
+        .onReceive(NotificationCenter.default.publisher(for: .engineReady)) { _ in
             board.engineReadyInit()
         }
         .toolbar {
