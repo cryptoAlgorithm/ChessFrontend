@@ -24,7 +24,7 @@ struct PlayerScoreView: View {
             HStack {
                 Spacer(minLength: 0)
                 Rectangle()
-                    .fill(.white.opacity(0.75))
+                    .fill(.white.opacity(0.8))
                     .frame(width: geometry.size.width * (
                         mateIn?.signum() == 1
                         ? 0
@@ -50,7 +50,7 @@ struct PlayerScoreView: View {
                 }
             }
         }
-        .frame(height: 16)
+        .frame(height: 12)
     }
 }
 
