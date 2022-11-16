@@ -47,7 +47,7 @@ Parses UCI strings from the engine into ``UCIDecodable`` storage objects.
 Represents various aspects of items making up the logic and items behind
 the game.
 
-- ``BoardState``
+- ``BoardViewModel``
 - ``Piece``
 - ``PieceType``
 - ``PieceSide``

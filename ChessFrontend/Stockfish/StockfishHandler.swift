@@ -46,8 +46,7 @@ final class StockfishHandler: ObservableObject {
                 }
             }
 
-            try await ChessFrontendApp.engine!.setOptionValue("Threads", value: "10")
-
+            try await ChessFrontendApp.engine!.setOptionValue("Threads", value: String(ProcessInfo().activeProcessorCount))
             print("stockfish ready")
             isInit = true
 

@@ -9,7 +9,7 @@ import SwiftUI
 
 /// Renders a grid of chess pieces in a chess board-like layout
 struct ChessView: View {
-    @EnvironmentObject private var board: BoardState
+    @EnvironmentObject private var board: BoardViewModel
 
     let moveDisabled: Bool
 
@@ -19,14 +19,14 @@ struct ChessView: View {
         LazyVGrid(
             columns: [GridItem](
                 repeating: GridItem(.flexible(minimum: 50, maximum: 100), spacing: 0),
-                count: BoardState.boardSize
+                count: BoardViewModel.boardSize
             ),
             spacing: 0
         ) {
             ForEach(Array(board.board.enumerated()), id: \.element.id) { idx, piece in
                 PieceView(
                     item: piece,
-                    bgAccented: !(idx + Int(floor(Double(idx)/Double(BoardState.boardSize)))).isMultiple(of: 2)
+                    bgAccented: !(idx + Int(floor(Double(idx)/Double(BoardViewModel.boardSize)))).isMultiple(of: 2)
                 ) {
                     draggingIdx = idx
                 } dropped: {
@@ -48,7 +48,7 @@ struct ChessView: View {
 }
 
 fileprivate struct MockChessPreviewContainer: View {
-    @StateObject private var previewBoard = BoardState()
+    @StateObject private var previewBoard = BoardViewModel()
 
     var body: some View {
         ChessView(moveDisabled: false).environmentObject(previewBoard)

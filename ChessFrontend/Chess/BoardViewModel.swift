@@ -10,7 +10,7 @@ import SwiftUI
 /// Stores and synchronises the state of the board throughout the app
 ///
 /// This also essentially acts as a view model for ``ContentView``
-class BoardState: ObservableObject {
+class BoardViewModel: ObservableObject {
     /// Flattened array of the current board state
     @Published public var board: [Piece] = []
     /// Move history of both players

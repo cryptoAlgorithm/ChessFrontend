@@ -13,7 +13,7 @@ struct ContentView: View {
     @State private var advancedOptionsVisible = false
     @State private var engineOptions: [UCIResponse.Option] = []
 
-    @StateObject private var board = BoardState()
+    @StateObject private var board = BoardViewModel()
 
     private var engineSidebar: some View {
         VStack(alignment: .leading, spacing: 8) {
