@@ -23,24 +23,32 @@ struct PlayerScoreView: View {
         GeometryReader { geometry in
             HStack {
                 Spacer(minLength: 0)
-                Rectangle()
-                    .fill(.white.opacity(0.8))
-                    .frame(width: geometry.size.width * (
-                        mateIn?.signum() == 1
-                        ? 0
-                        : mateIn?.signum() == -1
-                            ? 1
-                            : ((score+Self.maxPawns) / (Self.maxPawns*2)).clamped(to: 0.05...0.95)
-                    ))
-                    .animation(.spring(), value: score)
-                    .popover(isPresented: $hovered, arrowEdge: .leading) {
-                        Text(score.descriptionWithSign)
-                            .font(.title2)
-                            .fontWeight(.bold)
-                            .padding(8)
-                            .fixedSize()
-                            .interactiveDismissDisabled() // Prevent dismissing popover by clicking outside
-                    }
+                ZStack(alignment: .leading) {
+                    Rectangle()
+                        .fill(.white.opacity(0.8))
+                    // Score overlay on top of white rectangle
+                    Text(score.descriptionWithSign)
+                        .font(.caption2)
+                        .foregroundColor(.black)
+                        .padding(.leading, 2)
+                }
+                .frame(width: geometry.size.width * (
+                    mateIn?.signum() == 1
+                    ? 0
+                    : mateIn?.signum() == -1
+                        ? 1
+                        : ((score+Self.maxPawns) / (Self.maxPawns*2)).clamped(to: 0.05...0.95)
+                ))
+                .animation(.spring(), value: score)
+                .animation(.spring(), value: mateIn)
+                .popover(isPresented: $hovered, arrowEdge: .leading) {
+                    Text(score.descriptionWithSign)
+                        .font(.title2)
+                        .fontWeight(.bold)
+                        .padding(8)
+                        .fixedSize()
+                        .interactiveDismissDisabled() // Prevent dismissing popover by clicking outside
+                }
             }
             .onHover { hovered = $0 }
             .background(.gray.opacity(0.25))

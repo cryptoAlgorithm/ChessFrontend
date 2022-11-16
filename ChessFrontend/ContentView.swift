@@ -118,7 +118,7 @@ struct ContentView: View {
         }
         .onReceive(NotificationCenter.default.publisher(for: .engineOptionsUpdate)) { options in
             if let options = options.object as? [UCIResponse.Option] {
-                engineOptions = options
+                engineOptions = options.filter { !$0.id.hasPrefix("UCI_") }
             }
         }
         .onReceive(NotificationCenter.default.publisher(for: .engineReady)) { _ in

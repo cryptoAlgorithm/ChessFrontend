@@ -74,7 +74,7 @@ class BoardViewModel: ObservableObject {
         // Black is always the AI side
         guard currentSide == .black else { return }
         Task {
-            try await ChessFrontendApp.engine!.updatePosition(fen: fen)
+            try await ChessFrontendApp.engine!.updatePosition(moves: moves)
             // Force-unwrap because we shouldn't have gotten here if the engine couldn't be init
             let infos = try await ChessFrontendApp.engine!.search(depth: searchDepth)
             print("updated moves")
