@@ -19,14 +19,14 @@ struct ChessView: View {
         LazyVGrid(
             columns: [GridItem](
                 repeating: GridItem(.flexible(minimum: 50, maximum: 100), spacing: 0),
-                count: BoardViewModel.boardSize
+                count: Board.boardSize
             ),
             spacing: 0
         ) {
             ForEach(Array(board.board.enumerated()), id: \.element.id) { idx, piece in
                 PieceView(
                     item: piece,
-                    bgAccented: !(idx + Int(floor(Double(idx)/Double(BoardViewModel.boardSize)))).isMultiple(of: 2)
+                    bgAccented: !(idx + Int(floor(Double(idx)/Double(Board.boardSize)))).isMultiple(of: 2)
                 ) {
                     draggingIdx = idx
                 } dropped: {

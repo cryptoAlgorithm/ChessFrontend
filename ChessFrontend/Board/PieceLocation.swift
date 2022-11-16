@@ -38,7 +38,7 @@ public struct PieceLocation {
 
     public var boardIdx: Int {
         get {
-            x + (BoardViewModel.boardSize-y)*BoardViewModel.boardSize - 1
+            x + (Board.boardSize-y)*Board.boardSize - 1
         }
     }
 
@@ -51,8 +51,8 @@ public struct PieceLocation {
     ///
     /// - Parameter boardIdx: Index of piece location in the flattened 1D board array (0-indexed)
     public init(boardIdx: Int) {
-        x = (boardIdx % BoardViewModel.boardSize) + 1
-        y = BoardViewModel.boardSize - boardIdx/BoardViewModel.boardSize
+        x = (boardIdx % Board.boardSize) + 1
+        y = Board.boardSize - boardIdx/Board.boardSize
     }
 
     /// Create an instance of this struct from a position on the chess board

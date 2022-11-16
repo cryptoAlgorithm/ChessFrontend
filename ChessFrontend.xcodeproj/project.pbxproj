@@ -41,7 +41,6 @@
 		DA9881FB2923B33E000A223D /* Knob.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA9881FA2923B33E000A223D /* Knob.swift */; };
 		DA9881FD2923B535000A223D /* Int+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA9881FC2923B535000A223D /* Int+.swift */; };
 		DA9881FF2923D995000A223D /* Check.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA9881FE2923D995000A223D /* Check.swift */; };
-		DA98820129248D7F000A223D /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA98820029248D7F000A223D /* Board.swift */; };
 		DAFF6F132922440F009BE04F /* PieceArray+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAFF6F122922440F009BE04F /* PieceArray+.swift */; };
 /* End PBXBuildFile section */
 
@@ -94,7 +93,6 @@
 		DA9881FA2923B33E000A223D /* Knob.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Knob.swift; sourceTree = "<group>"; };
 		DA9881FC2923B535000A223D /* Int+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+.swift"; sourceTree = "<group>"; };
 		DA9881FE2923D995000A223D /* Check.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Check.swift; sourceTree = "<group>"; };
-		DA98820029248D7F000A223D /* Board.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Board.swift; sourceTree = "<group>"; };
 		DAFF6F122922440F009BE04F /* PieceArray+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PieceArray+.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -169,9 +167,8 @@
 			isa = PBXGroup;
 			children = (
 				DA50B8042913CF1200FA58E4 /* BoardViewModel.swift */,
-				DA98820029248D7F000A223D /* Board.swift */,
-				DA50B8062913CF8E00FA58E4 /* Piece.swift */,
 				DAFF6F122922440F009BE04F /* PieceArray+.swift */,
+				DA50B8062913CF8E00FA58E4 /* Piece.swift */,
 			);
 			path = Chess;
 			sourceTree = "<group>";
@@ -365,7 +362,6 @@
 				DA50B7F62913CABB00FA58E4 /* ContentView.swift in Sources */,
 				DA50B845291FB22700FA58E4 /* Launcher.swift in Sources */,
 				DA9881D229234520000A223D /* Double+.swift in Sources */,
-				DA98820129248D7F000A223D /* Board.swift in Sources */,
 				DA50B81129150D2900FA58E4 /* View+.swift in Sources */,
 				DA50B81729154EB900FA58E4 /* StockfishHandler.swift in Sources */,
 				DA50B7F42913CABB00FA58E4 /* ChessFrontendApp.swift in Sources */,
