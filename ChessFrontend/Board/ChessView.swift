@@ -53,7 +53,7 @@ fileprivate struct MockChessPreviewContainer: View {
         ChessView(moveDisabled: false)
             .environmentObject(previewBoard)
             .onAppear {
-                Task { try await previewBoard.engineReadyInit() }
+                previewBoard.engineReadyInit()
             }
     }
 }

@@ -57,7 +57,7 @@ public enum PieceSide: String {
 }
 
 /// The type of chess piece that resides at a position
-public enum PieceType: String {
+public enum PieceType: String, CaseIterable {
     /// No chess piece exists at the location
     case empty
     /// A pawn exists at the location
@@ -72,4 +72,22 @@ public enum PieceType: String {
     case queen
     /// A king exists at the location
     case king
+
+    /// Number of points the piece is worth
+    public var points: Int {
+        switch self {
+        case .empty:
+            return 0
+        case .pawn:
+            return 1
+        case .knight, .bishop:
+            return 3
+        case .rook:
+            return 5
+        case .queen:
+            return 9
+        case .king: // Technically the king is worth infinite points but Int.max is the closest to infinity
+            return .max
+        }
+    }
 }

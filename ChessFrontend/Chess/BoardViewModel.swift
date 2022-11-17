@@ -10,13 +10,20 @@ import SwiftUI
 /// Stores and synchronises the state of the board throughout the app
 ///
 /// This also essentially acts as a view model for ``ContentView``
-class BoardViewModel: ObservableObject {
+public class BoardViewModel: ObservableObject {
     /// Flattened array of the current board state
     @Published public var board: [Piece] = []
+    /// Pieces that were removed by the white player
+    @Published public var whiteRemovedPieces: [Piece] = []
+    /// Pieces that were removed by the black player
+    @Published public var blackRemovedPieces: [Piece] = []
+
     /// Move history of both players
     @Published public var moves: [Move] = []
+
     /// Side that will make the next move
     @Published public var currentSide: PieceSide = .white
+
     /// Number of "full moves" - incremented after every black move
     @Published public var fullMoves = 1
 
@@ -47,6 +54,8 @@ class BoardViewModel: ObservableObject {
     /// Reset the board to an initial state
     public func resetBoard() {
         board.reset()
+        blackRemovedPieces.removeAll()
+        whiteRemovedPieces.removeAll()
         // Reset moves
         moves = []
         currentSide = .white
@@ -64,7 +73,10 @@ class BoardViewModel: ObservableObject {
     /// Make a move by moving a piece at an index in the board array to another position
     @MainActor public func makeMove(from: Int, to: Int) {
         moves.append(Move(fromBoardIdx: from, toBoardIdx: to))
-        board.move(with: moves.last!)
+        if let removedPiece = board.move(with: moves.last!) {
+            if removedPiece.side == .white { blackRemovedPieces.append(removedPiece) }
+            else { whiteRemovedPieces.append(removedPiece) }
+        }
         currentSide.invert()
         playAIMove()
     }

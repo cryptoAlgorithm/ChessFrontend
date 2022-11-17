@@ -33,7 +33,8 @@
 		DA50B845291FB22700FA58E4 /* Launcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA50B844291FB22700FA58E4 /* Launcher.swift */; };
 		DA6AE6C32924DB8D00B13F3F /* SwiftSerial in Frameworks */ = {isa = PBXBuildFile; productRef = DA6AE6C22924DB8D00B13F3F /* SwiftSerial */; };
 		DA6AE6C52925057B00B13F3F /* BoardBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6AE6C42925057B00B13F3F /* BoardBackground.swift */; };
-		DA9881D02923307A000A223D /* PlayerScoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA9881CF2923307A000A223D /* PlayerScoreView.swift */; };
+		DA6AE6C829261E2700B13F3F /* CapturedPieces.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6AE6C729261E2700B13F3F /* CapturedPieces.swift */; };
+		DA9881D02923307A000A223D /* EvaluationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA9881CF2923307A000A223D /* EvaluationBar.swift */; };
 		DA9881D229234520000A223D /* Double+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA9881D129234520000A223D /* Double+.swift */; };
 		DA9881D429234A0B000A223D /* Comparable+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA9881D329234A0B000A223D /* Comparable+.swift */; };
 		DA9881D6292358CD000A223D /* PlayerTurnPill.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA9881D5292358CD000A223D /* PlayerTurnPill.swift */; };
@@ -86,7 +87,8 @@
 		DA50B83A291FAFEB00FA58E4 /* ChessFrontendTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ChessFrontendTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA50B844291FB22700FA58E4 /* Launcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Launcher.swift; sourceTree = "<group>"; };
 		DA6AE6C42925057B00B13F3F /* BoardBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardBackground.swift; sourceTree = "<group>"; };
-		DA9881CF2923307A000A223D /* PlayerScoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerScoreView.swift; sourceTree = "<group>"; };
+		DA6AE6C729261E2700B13F3F /* CapturedPieces.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapturedPieces.swift; sourceTree = "<group>"; };
+		DA9881CF2923307A000A223D /* EvaluationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvaluationBar.swift; sourceTree = "<group>"; };
 		DA9881D129234520000A223D /* Double+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+.swift"; sourceTree = "<group>"; };
 		DA9881D329234A0B000A223D /* Comparable+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comparable+.swift"; sourceTree = "<group>"; };
 		DA9881D5292358CD000A223D /* PlayerTurnPill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerTurnPill.swift; sourceTree = "<group>"; };
@@ -146,8 +148,9 @@
 				DA50B8092913D81000FA58E4 /* Board */,
 				DA50B8082913CF9800FA58E4 /* Chess */,
 				DA9881F62923B315000A223D /* View */,
-				DA9881CF2923307A000A223D /* PlayerScoreView.swift */,
+				DA9881CF2923307A000A223D /* EvaluationBar.swift */,
 				DA9881D5292358CD000A223D /* PlayerTurnPill.swift */,
+				DA6AE6C729261E2700B13F3F /* CapturedPieces.swift */,
 				DA50B7F52913CABB00FA58E4 /* ContentView.swift */,
 				DA50B7F32913CABB00FA58E4 /* ChessFrontendApp.swift */,
 				DA50B844291FB22700FA58E4 /* Launcher.swift */,
@@ -369,6 +372,7 @@
 				DA50B82C291F582400FA58E4 /* Documentation.docc in Sources */,
 				DA50B825291D380900FA58E4 /* UCIDecodable.swift in Sources */,
 				DA9881D829235ED1000A223D /* AnyTransition+.swift in Sources */,
+				DA6AE6C829261E2700B13F3F /* CapturedPieces.swift in Sources */,
 				DA9881FB2923B33E000A223D /* Knob.swift in Sources */,
 				DA50B7F62913CABB00FA58E4 /* ContentView.swift in Sources */,
 				DA50B845291FB22700FA58E4 /* Launcher.swift in Sources */,
@@ -382,7 +386,7 @@
 				DA50B832291FAC6000FA58E4 /* PieceLocation.swift in Sources */,
 				DA50B830291FA8E700FA58E4 /* Character+.swift in Sources */,
 				DA50B81C291625A400FA58E4 /* EngineNotifNames.swift in Sources */,
-				DA9881D02923307A000A223D /* PlayerScoreView.swift in Sources */,
+				DA9881D02923307A000A223D /* EvaluationBar.swift in Sources */,
 				DA6AE6C52925057B00B13F3F /* BoardBackground.swift in Sources */,
 				DA9881F4292377BF000A223D /* Binding+.swift in Sources */,
 				DA9881D6292358CD000A223D /* PlayerTurnPill.swift in Sources */,

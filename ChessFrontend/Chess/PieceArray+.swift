@@ -40,9 +40,11 @@ public extension Array where Element == Piece {
     }
 
     /// Executes a move in the board
-    mutating func move(with move: Move) {
+    mutating func move(with move: Move) -> Piece? {
+        let prevPiece = self[move.to.boardIdx].type != .empty ? self[move.to.boardIdx] : nil
         self[move.to.boardIdx] = self[move.from.boardIdx]
         self[move.from.boardIdx] = Piece()
+        return prevPiece
     }
 
     /// Construct a UCI representation of the board with the specified full and half moves

@@ -22,7 +22,7 @@ struct PlayerTurnPill: View {
         .padding(.vertical, 4)
         .padding(.horizontal, 6)
         .background(Color.accentColor)
-        .cornerRadius(4)
+        .cornerRadius(6)
     }
 }
 

@@ -61,7 +61,10 @@ struct ContentView: View {
             if board.currentSide == .black {
                 PlayerTurnPill(isBot: true).transition(.asymmetricLeadingPush)
             }
-            Text("Bot").font(.largeTitle).fontWeight(.black)
+            HStack(spacing: 12) {
+                Text("Bot").font(.largeTitle).fontWeight(.black)
+                CapturedPieces(pieces: board.blackRemovedPieces)
+            }
         }
         .padding(16)
     }
@@ -86,7 +89,10 @@ struct ContentView: View {
             if board.currentSide == .white {
                 PlayerTurnPill(isBot: false).transition(.asymmetricTrailingPush)
             }
-            Text("You").font(.largeTitle).fontWeight(.black)
+            HStack(spacing: 12) {
+                CapturedPieces(pieces: board.whiteRemovedPieces)
+                Text("You").font(.largeTitle).fontWeight(.black)
+            }
         }
         .padding(16)
     }
