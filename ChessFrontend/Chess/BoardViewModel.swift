@@ -56,8 +56,8 @@ class BoardViewModel: ObservableObject {
 
         Task {
             // Tell the engine we are starting a new game
-            try await ChessFrontendApp.engine!.newGame()
-            try await ChessFrontendApp.engine!.waitReady()
+            try await engine.newGame()
+            try await engine.waitReady()
         }
     }
 
@@ -74,9 +74,9 @@ class BoardViewModel: ObservableObject {
         // Black is always the AI side
         guard currentSide == .black else { return }
         Task {
-            try await ChessFrontendApp.engine!.updatePosition(moves: moves)
+            try await engine.updatePosition(moves: moves)
             // Force-unwrap because we shouldn't have gotten here if the engine couldn't be init
-            let infos = try await ChessFrontendApp.engine!.search(depth: searchDepth)
+            let infos = try await engine.search(depth: searchDepth)
             print("updated moves")
             for info in infos {
                 if case .bestMove(let bestMove) = info {

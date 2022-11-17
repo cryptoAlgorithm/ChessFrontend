@@ -50,7 +50,7 @@ final class EngineHandler: ObservableObject {
                 }
             }
 
-            try await ChessFrontendApp.engine!.setOptionValue("Threads", value: String(ProcessInfo().activeProcessorCount))
+            try await engine.setOptionValue("Threads", value: String(ProcessInfo().activeProcessorCount))
             isInit = true
 
             DispatchQueue.main.async { [weak self] in

@@ -52,7 +52,9 @@ fileprivate struct MockChessPreviewContainer: View {
     var body: some View {
         ChessView(moveDisabled: false)
             .environmentObject(previewBoard)
-            .onAppear { previewBoard.engineReadyInit() }
+            .onAppear {
+                Task { try await previewBoard.engineReadyInit() }
+            }
     }
 }
 

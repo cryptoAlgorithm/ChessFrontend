@@ -12,18 +12,24 @@ struct Knob: View {
     let def: Int
     let min: Int
     let max: Int
-    let commitValue: (Int) -> Void
+    let commitValue: (Int) async throws -> Void
 
     @State private var currentValue = 0
+    @State private var committing = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: 2) {
             Text("\(name): ").font(.callout) + Text(String(currentValue)).font(.monospaced(.callout)())
             Slider(value: .convert(from: $currentValue), in: Float(min)...Float(max)) { isDragging in
                 if !isDragging {
-                    commitValue(currentValue)
+                    Task {
+                        committing = true
+                        try await commitValue(currentValue)
+                        committing = false
+                    }
                 }
             }
+            .disabled(committing)
             .controlSize(.mini)
             .onAppear { currentValue = def }
         }

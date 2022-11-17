@@ -7,10 +7,10 @@
 
 import SwiftUI
 
+internal let engine: EngineHandler! = try? EngineHandler(binaryURL: Bundle.main.url(forResource: "stockfish", withExtension: "")!)
+
 /// The main app entrypoint when running normally
 struct ChessFrontendApp: App {
-    static let engine = try? EngineHandler(binaryURL: Bundle.main.url(forResource: "stockfish", withExtension: "")!)
-
     @State private var initError: String?
 
     var body: some Scene {
@@ -21,7 +21,7 @@ struct ChessFrontendApp: App {
                     initError = "Stockfish process terminated unexpectedly"
                 }
                 .onAppear {
-                    if Self.engine == nil {
+                    if engine == nil {
                         initError = "Stockfish initialisation failed"
                     }
                 }
