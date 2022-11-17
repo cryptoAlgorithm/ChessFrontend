@@ -108,7 +108,7 @@ struct ContentView: View {
         .padding(.top, 16)
         .background(.black)
         .overlay(alignment: .top) {
-            PlayerScoreView(score: board.score, mateIn: nil)
+            EvaluationBar(score: board.score, mateIn: nil)
         }
         .onReceive(NotificationCenter.default.publisher(for: .engineCPUpdate)) { out in
             if let obj = out.object, let (score, mateIn) = obj as? (Int, Int?) {

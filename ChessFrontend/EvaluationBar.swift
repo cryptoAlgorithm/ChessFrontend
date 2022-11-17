@@ -1,5 +1,5 @@
 //
-//  PlayerScoreView.swift
+//  EvaluationBar.swift
 //  ChessFrontend
 //
 //  Created by Vincent Kwok on 15/11/22.
@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-/// A custom progress bar-like view that displays the player's scores
-struct PlayerScoreView: View {
+/// A custom progress bar-like view that displays the players' evaluation by the engine
+struct EvaluationBar: View {
     /// The advantage of the white player, in pawns
     let score: Double
     /// Number of moves the white player can be mated in
@@ -64,11 +64,11 @@ struct PlayerScoreView: View {
 
 struct PlayerScoreView_Previews: PreviewProvider {
     static var previews: some View {
-        PlayerScoreView(score: 0, mateIn: -5)
+        EvaluationBar(score: 0, mateIn: -5)
             .frame(width: 600)
-        PlayerScoreView(score: 5, mateIn: nil)
+        EvaluationBar(score: 5, mateIn: nil)
             .frame(width: 600)
-        PlayerScoreView(score: -5, mateIn: nil)
+        EvaluationBar(score: -5, mateIn: nil)
             .frame(width: 600)
     }
 }
