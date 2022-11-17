@@ -11,7 +11,7 @@ import Foundation
 ///
 /// `struct`s, `enum`s and `class`es can all conform to this protocol to allow decoding
 /// of data from UCI strings for populating properties.
-protocol UCIDecodable {
+public protocol UCIDecodable {
     /// The enum that the UCI data is keyed by
     associatedtype Key: UCIKey
 
@@ -20,4 +20,4 @@ protocol UCIDecodable {
 }
 
 /// An enum which UCI values are keyed by, allowing decoding
-typealias UCIKey = RawRepresentable & CaseIterable
+public typealias UCIKey = RawRepresentable & CaseIterable

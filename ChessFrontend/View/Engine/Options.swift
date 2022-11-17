@@ -10,6 +10,12 @@ import SwiftUI
 struct Options: View {
     let options: [UCIResponse.Option]
 
+    static public let optionsBlacklist = [
+        "Ponder",
+        "Threads",
+        "MultiPV"
+    ]
+
     private func persistAndUpdateOption<Value: LosslessStringConvertible>(_ name: String, value: Value) async throws {
         try await engine.setOptionValue(name, value: value.description)
     }

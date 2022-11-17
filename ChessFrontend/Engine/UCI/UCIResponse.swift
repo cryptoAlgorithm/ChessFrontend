@@ -7,12 +7,12 @@
 
 import Foundation
 
-enum UCIResponse {
+public enum UCIResponse {
     /// Payload that informs the GUI of the engine's name or author
-    enum ID: UCIDecodable {
-        typealias Key = Keys
+    public enum ID: UCIDecodable {
+        public typealias Key = Keys
 
-        enum Keys: String, CaseIterable {
+        public enum Keys: String, CaseIterable {
             case author
             case name
         }
@@ -22,7 +22,7 @@ enum UCIResponse {
         /// A payload containing the engine's author
         case name(String)
 
-        init(_ decoder: UCIDecoder) throws {
+        public init(_ decoder: UCIDecoder) throws {
             if let author = try decoder.decodeStringOptional(Keys.author.rawValue) {
                 self = .author(author)
             } else if let name = try decoder.decodeStringOptional(Keys.name.rawValue) {
@@ -41,10 +41,10 @@ enum UCIResponse {
     ///
     /// > Tip: Details about each case's associated value(s) are included within their
     /// > documentation discussion. Click on a case to view more details.
-    enum Option: UCIDecodable, Identifiable {
-        typealias Key = Keys
+    public enum Option: UCIDecodable, Identifiable {
+        public typealias Key = Keys
 
-        enum Keys: String, CaseIterable {
+        public enum Keys: String, CaseIterable {
             case name
             case type
             case defaultValue = "default"
@@ -53,7 +53,7 @@ enum UCIResponse {
             case values = "var"
         }
 
-        enum OptType: String {
+        public enum OptType: String {
             case check
             case spin
             case combo
@@ -61,7 +61,7 @@ enum UCIResponse {
             case string
         }
 
-        init(_ decoder: UCIDecoder) throws {
+        public init(_ decoder: UCIDecoder) throws {
             let name = try decoder.decodeString(Keys.name.rawValue)
             let type = try decoder.decodeString(Keys.type.rawValue)
             switch OptType(rawValue: type) {
@@ -88,8 +88,14 @@ enum UCIResponse {
             }
         }
 
+        /// The ID of this option, for Identifiable conformance
+        ///
+        /// An alias of ``UCIResponse/Option/name``
+        public var id: String { name }
+
         // This is kinda silly
-        var id: String {
+        /// The name of this option
+        public var name: String {
             switch self {
             case .button(name: let name):
                 return name
@@ -148,10 +154,10 @@ enum UCIResponse {
     }
 
     /// An information payload
-    struct Info: UCIDecodable {
-        typealias Key = Keys
+    public struct Info: UCIDecodable {
+        public typealias Key = Keys
 
-        enum Keys: String, CaseIterable {
+        public enum Keys: String, CaseIterable {
             case depth
             case selectiveDepth = "seldepth"
             case time
@@ -173,13 +179,13 @@ enum UCIResponse {
             case currentLine = "currline"
         }
 
-        let depth: Int?
-        let currentMove: Move?
-        let currentMoveNumber: Int?
-        let centiPawnsScore: Int?
-        let mateMoves: Int?
+        public let depth: Int?
+        public let currentMove: Move?
+        public let currentMoveNumber: Int?
+        public let centiPawnsScore: Int?
+        public let mateMoves: Int?
 
-        init(_ decoder: UCIDecoder) throws {
+        public init(_ decoder: UCIDecoder) throws {
             depth = try decoder.decodeIntOptional(Keys.depth.rawValue)
             if let currMove = try decoder.decodeStringOptional(Keys.currentMove.rawValue) {
                 currentMove = try Move(from: currMove)
@@ -191,18 +197,18 @@ enum UCIResponse {
     }
 
     /// A best move
-    struct BestMove: UCIDecodable {
-        typealias Key = Keys
+    public struct BestMove: UCIDecodable {
+        public typealias Key = Keys
 
-        enum Keys: String, CaseIterable {
+        public enum Keys: String, CaseIterable {
             case bestmove
             case ponder
         }
 
-        let move: Move
-        let ponder: Move?
+        public let move: Move
+        public let ponder: Move?
 
-        init(_ decoder: UCIDecoder) throws {
+        public init(_ decoder: UCIDecoder) throws {
             move = try Move(from: try decoder.decodeString(Keys.bestmove.rawValue))
             if let ponderLoc = try decoder.decodeStringOptional(Keys.ponder.rawValue) {
                 ponder = try Move(from: ponderLoc)

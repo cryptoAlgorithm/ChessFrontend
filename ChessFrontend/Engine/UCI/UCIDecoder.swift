@@ -35,7 +35,7 @@ enum UCIDecodingError: Error, LocalizedError {
 }
 
 /// A protocol for decoders which decode values from UCI strings by keys
-protocol UCIDecoder {
+public protocol UCIDecoder {
     /// Decode a `String` at a certain key
     ///
     /// - Throws: ``UCIDecodingError/keyNotFound(requestedKey:)`` if no value was found at the given key,
