@@ -19,9 +19,14 @@ final class EngineHandlerTests: XCTestCase {
         XCTAssertNotNil(binaryURL)
     }
 
-    func testInfo() throws {
+    private func initAndWaitForEngine() throws -> EngineHandler {
         let engine = try EngineHandler(with: binaryURL!)
         wait(for: [XCTNSNotificationExpectation(name: .engineReady)], timeout: 0.5)
+        return engine
+    }
+
+    func testInfo() throws {
+        let engine = try initAndWaitForEngine()
 
         XCTAssertNotNil(engine.engineAuthor, "engineAuthor should not be nil after engine initialisation")
         XCTAssertNotNil(engine.engineName, "engineName should not be nil after engine initialisation")
@@ -34,10 +39,11 @@ final class EngineHandlerTests: XCTestCase {
         var moves: [Move] = []
 
         // Initialise engines sequentially
-        let engineA = try EngineHandler(with: binaryURL!)
-        wait(for: [XCTNSNotificationExpectation(name: .engineReady)], timeout: 0.5)
-        let engineB = try EngineHandler(with: binaryURL!)
-        wait(for: [XCTNSNotificationExpectation(name: .engineReady)], timeout: 0.5)
+        let engineA = try initAndWaitForEngine()
+        let engineB = try initAndWaitForEngine()
+
+        let notTerminatingExpectation = XCTNSNotificationExpectation(name: .engineProcTerminated)
+        notTerminatingExpectation.isInverted = true
 
         // Start new games and wait for both engines to be ready
         try await engineA.newGame()
@@ -65,5 +71,6 @@ final class EngineHandlerTests: XCTestCase {
             }
         }
         XCTAssertEqual(moves.count, Self.simulatedMoves)
+        wait(for: [notTerminatingExpectation], timeout: 0.1)
     }
 }
