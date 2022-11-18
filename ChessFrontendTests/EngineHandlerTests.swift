@@ -11,6 +11,7 @@ import ChessFrontend
 final class EngineHandlerTests: XCTestCase {
     private static let binaryName = "stockfish-universal"
     private static let simulatedMoves = 100
+    private static let searchDepth = 10 // Use a way shallower depth to quicken tests
     private var binaryURL: URL? {
         Bundle.main.url(forResource: Self.binaryName, withExtension: "")
     }
@@ -64,13 +65,31 @@ final class EngineHandlerTests: XCTestCase {
         for m in 0..<Self.simulatedMoves { // Simulate 100 moves
             if m.isMultiple(of: 2) {
                 try await engineA.updatePosition(moves: moves)
-                makeMove(with: try await engineA.search(depth: 10))
+                makeMove(with: try await engineA.search(depth: Self.searchDepth))
             } else {
                 try await engineB.updatePosition(moves: moves)
-                makeMove(with: try await engineB.search(depth: 10))
+                makeMove(with: try await engineB.search(depth: Self.searchDepth))
             }
         }
         XCTAssertEqual(moves.count, Self.simulatedMoves)
         wait(for: [notTerminatingExpectation], timeout: 0.1)
+    }
+
+    func testEvaluationScore() async throws {
+        let engine = try initAndWaitForEngine()
+        try await engine.updatePosition(moves: [])
+
+        let scoreUpdateExpectation = XCTNSNotificationExpectation(name: .engineCPUpdate)
+        scoreUpdateExpectation.handler = { notification in
+            guard let score = notification.object as? (Int, Int?) else { return false }
+            XCTAssertLessThan(
+                abs(score.0)/100, 5,
+                "Score should not have a magnitude greater than 5 pawns in the first turn"
+            )
+            return true
+        }
+        _ = try await engine.search(depth: Self.searchDepth)
+
+        wait(for: [scoreUpdateExpectation], timeout: 10)
     }
 }
