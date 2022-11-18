@@ -34,6 +34,7 @@
 		DA6AE6C52925057B00B13F3F /* BoardBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6AE6C42925057B00B13F3F /* BoardBackground.swift */; };
 		DA6AE6C829261E2700B13F3F /* CapturedPieces.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6AE6C729261E2700B13F3F /* CapturedPieces.swift */; };
 		DA6AE6CC292737D100B13F3F /* stockfish-universal in Resources */ = {isa = PBXBuildFile; fileRef = DA6AE6CB292737D000B13F3F /* stockfish-universal */; };
+		DA6AE6CE292738BB00B13F3F /* EngineHandlerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6AE6CD292738BA00B13F3F /* EngineHandlerTests.swift */; };
 		DA6AE6CF2927418500B13F3F /* stockfish-universal in Resources */ = {isa = PBXBuildFile; fileRef = DA6AE6CB292737D000B13F3F /* stockfish-universal */; };
 		DA9881D02923307A000A223D /* EvaluationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA9881CF2923307A000A223D /* EvaluationBar.swift */; };
 		DA9881D229234520000A223D /* Double+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA9881D129234520000A223D /* Double+.swift */; };
@@ -89,6 +90,7 @@
 		DA6AE6C42925057B00B13F3F /* BoardBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardBackground.swift; sourceTree = "<group>"; };
 		DA6AE6C729261E2700B13F3F /* CapturedPieces.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapturedPieces.swift; sourceTree = "<group>"; };
 		DA6AE6CB292737D000B13F3F /* stockfish-universal */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = "stockfish-universal"; sourceTree = "<group>"; };
+		DA6AE6CD292738BA00B13F3F /* EngineHandlerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EngineHandlerTests.swift; sourceTree = "<group>"; };
 		DA9881CF2923307A000A223D /* EvaluationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvaluationBar.swift; sourceTree = "<group>"; };
 		DA9881D129234520000A223D /* Double+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+.swift"; sourceTree = "<group>"; };
 		DA9881D329234A0B000A223D /* Comparable+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comparable+.swift"; sourceTree = "<group>"; };
@@ -125,7 +127,7 @@
 			isa = PBXGroup;
 			children = (
 				DA50B82B291F582400FA58E4 /* Documentation.docc */,
-				DA50B8142915325800FA58E4 /* stockfish */,
+				DA6AE6CB292737D000B13F3F /* stockfish-universal */,
 				DA50B7F22913CABB00FA58E4 /* ChessFrontend */,
 				DA50B83B291FAFEB00FA58E4 /* ChessFrontendTests */,
 				DA50B7F12913CABB00FA58E4 /* Products */,
@@ -234,6 +236,7 @@
 			isa = PBXGroup;
 			children = (
 				DA50B833291FAEF300FA58E4 /* PieceLocationTests.swift */,
+				DA6AE6CD292738BA00B13F3F /* EngineHandlerTests.swift */,
 			);
 			path = ChessFrontendTests;
 			sourceTree = "<group>";
@@ -404,6 +407,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DA6AE6CE292738BB00B13F3F /* EngineHandlerTests.swift in Sources */,
 				DA50B843291FAFF600FA58E4 /* PieceLocationTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

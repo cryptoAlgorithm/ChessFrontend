@@ -8,7 +8,7 @@
 import Foundation
 
 /// UCI commands that can be sent to the engine
-enum UCICommand: String {
+public enum UCICommand: String {
     /// Tell engine to use the UCI protocol in following communications
     ///
     /// This should always be the first command sent to the engine so it knows what to expect

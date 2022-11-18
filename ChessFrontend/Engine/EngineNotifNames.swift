@@ -15,7 +15,7 @@
 
 import Foundation
 
-extension NSNotification.Name {
+public extension NSNotification.Name {
     static let engineProcTerminated = Self("chess-engine-proc-term")
     static let engineReady = Self("chesss-engine-ready")
     static let engineCPUpdate = Self("chess-engine-cp")

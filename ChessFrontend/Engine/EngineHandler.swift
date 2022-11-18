@@ -8,7 +8,7 @@
 import Foundation
 
 /// Facilitates various interactions with the Stockfish chess engine
-final class EngineHandler: ObservableObject {
+public final class EngineHandler: ObservableObject {
     fileprivate let proc = Process()
     fileprivate let inPipe = Pipe()
     fileprivate let outPipe = Pipe()
@@ -29,7 +29,7 @@ final class EngineHandler: ObservableObject {
     ///
     /// - Parameter binaryURL: URL to engine binary
     /// - Throws: If a process or decoding error occurred during initialisation
-    init(binaryURL: URL) throws {
+    public init(with binaryURL: URL, completionHandler: @escaping () -> () = {}) throws {
         try initProc(with: binaryURL)
         try proc.run()
 
@@ -45,17 +45,18 @@ final class EngineHandler: ObservableObject {
                     case .author(let author): engineAuthor = author
                     }
                 } else if case let .option(option) = inf {
-                    print(option)
                     options.append(option)
                 }
             }
 
-            try await engine.setOptionValue("Threads", value: String(ProcessInfo().activeProcessorCount))
+            try await setOptionValue("Threads", value: String(ProcessInfo().activeProcessorCount))
             isInit = true
 
             DispatchQueue.main.async { [weak self] in
                 NotificationCenter.default.post(name: .engineOptionsUpdate, object: self?.options)
                 NotificationCenter.default.post(name: .engineReady, object: nil)
+
+                completionHandler()
             }
         }
     }
@@ -92,7 +93,7 @@ final class EngineHandler: ObservableObject {
 
 extension EngineHandler {
     fileprivate func waitForResponse(
-        terminatorPredicate: @escaping TerminatorPredicate = defaultTerminatorPredicate,
+        terminatorPredicate: TerminatorPredicate? = nil,
         useGroup: Bool = true
     ) async throws -> [UCIResponse] {
         let handle = outPipe.fileHandleForReading
@@ -128,7 +129,7 @@ extension EngineHandler {
                         if useGroup { self.engineIOGroup.leave() }
                         return
                     }
-                    if terminatorPredicate(chunk) {
+                    if terminatorPredicate?(chunk) ?? true {
                         handle.readabilityHandler = nil
                         Task {
                             continuation.resume(returning: await payloads.responses)
@@ -159,7 +160,7 @@ extension EngineHandler {
         }
     }
 
-    private static func defaultTerminatorPredicate(_ chunk: String) -> Bool {
+    static func defaultTerminatorPredicate(_ chunk: String) -> Bool {
         true // so true
     }
 }
@@ -168,7 +169,7 @@ extension EngineHandler {
 ///
 /// - Parameter chunk: The chunk received from the engine
 /// - Returns: `true` if the current communication is complete, `false` if more input from the engine should be gathered
-typealias TerminatorPredicate = (_ chunk: String) -> Bool
+public typealias TerminatorPredicate = (_ chunk: String) -> Bool
 
 // MARK: - Command parser wrapper
 extension EngineHandler {
@@ -205,7 +206,7 @@ extension EngineHandler {
     public func sendCommandGettingResponse(
         _ commandName: UCICommand,
         parameters: [String : String]? = nil,
-        terminatorPredicate: @escaping TerminatorPredicate = defaultTerminatorPredicate
+        terminatorPredicate: TerminatorPredicate? = nil
     ) async throws -> [UCIResponse] {
         defer { engineIOGroup.leave() } // Leave group once we're done
         try await sendCommand(commandName, parameters: parameters, leaveGroup: false)

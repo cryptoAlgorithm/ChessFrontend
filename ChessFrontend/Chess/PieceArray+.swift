@@ -47,6 +47,11 @@ public extension Array where Element == Piece {
         return prevPiece
     }
 
+    /// Get the list of valid moves for a certain piece
+    func getValidMoves(for idx: Int) -> [Move] {
+        []
+    }
+
     /// Construct a UCI representation of the board with the specified full and half moves
     func getUCI(currentSide: PieceSide, fullMoves: Int, halfMoves: Int) -> String {
         var emptySpaces = 0

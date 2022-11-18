@@ -7,7 +7,11 @@
 
 import SwiftUI
 
-internal let engine: EngineHandler! = try? EngineHandler(binaryURL: Bundle.main.url(forResource: "stockfish", withExtension: "")!)
+internal let engine: EngineHandler! = NSClassFromString("XCTestCase") == nil
+    ? try? EngineHandler(
+        with: Bundle.main.url(forResource: "stockfish-universal", withExtension: "")!
+    )
+    : nil
 
 /// The main app entrypoint when running normally
 struct ChessFrontendApp: App {
