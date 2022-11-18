@@ -115,27 +115,27 @@ extension EngineHandler {
                     return
                 }
                 let str = String(decoding: data, as: UTF8.self)
-                for chunk in str.components(separatedBy: "\n") {
-                    do {
-                        if let parsed = try Self.parseResponse(chunk) { // Only append if parsed response isn't nil
-                            // Simply wrapping the actor call with a Task probably isn't the proper
-                            // way to get thread-safe code, but it appears to work fine in this situation
-                            Task { await payloads.add(response: parsed) }
+                // Simply wrapping the actor calls with a Task probably isn't the proper
+                // way to get thread-safe code, but it appears to work fine in this situation
+                Task {
+                    for chunk in str.components(separatedBy: "\n") {
+                        do {
+                            if let parsed = try Self.parseResponse(chunk) { // Only append if parsed response isn't nil
+                                await payloads.add(response: parsed)
+                            }
+                        } catch {
+                            print("throwing error \(error)")
+                            handle.readabilityHandler = nil
+                            continuation.resume(throwing: error)
+                            if useGroup { self.engineIOGroup.leave() }
+                            return
                         }
-                    } catch {
-                        print("throwing error \(error)")
-                        handle.readabilityHandler = nil
-                        continuation.resume(throwing: error)
-                        if useGroup { self.engineIOGroup.leave() }
-                        return
-                    }
-                    if terminatorPredicate?(chunk) ?? true {
-                        handle.readabilityHandler = nil
-                        Task {
+                        if terminatorPredicate?(chunk) ?? true {
+                            handle.readabilityHandler = nil
                             continuation.resume(returning: await payloads.responses)
                             if useGroup { self.engineIOGroup.leave() }
+                            return
                         }
-                        break
                     }
                 }
             }
@@ -291,13 +291,13 @@ extension EngineHandler {
     /// or ``StockfishHandler/updatePosition(fen:)``
     public func search(depth: Int = 20) async throws -> [UCIResponse] {
         try await sendCommandGettingResponse(.go, parameters: ["depth": String(depth)]) { respChunk in
-            print(respChunk)
-            if let parsed = try? Self.parseResponse(respChunk),
+            // print(respChunk)
+            /*if let parsed = try? Self.parseResponse(respChunk),
                case .info(let info) = parsed, let cp = info.centiPawnsScore {
                 DispatchQueue.main.async { // Post a notification to update the UI
                     NotificationCenter.default.post(name: .engineCPUpdate, object: (cp, info.mateMoves))
                 }
-            }
+            }*/
             return respChunk.hasPrefix("bestmove")
         }
     }
