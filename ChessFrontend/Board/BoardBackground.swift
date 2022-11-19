@@ -24,6 +24,25 @@ struct BoardBackground: View {
                             : .accentColor
                     )
                     .aspectRatio(1, contentMode: .fill)
+                    .overlay(alignment: .topLeading) {
+                        if idx.isMultiple(of: Board.boardSize) {
+                            // Combining this with the bottom equation in any combination causes a type check timeout
+                            let row = idx / Board.boardSize
+                            Text(String(Board.boardSize - row))
+                                .font(.system(size: 14, weight: .medium, design: .monospaced))
+                                .foregroundColor(.black)
+                                .padding(2)
+                        }
+                    }
+                    .overlay(alignment: .bottomTrailing) {
+                        if idx >= Board.boardSize * (Board.boardSize-1) {
+                            let xIdx = idx - Board.boardSize * (Board.boardSize-1)
+                            Text(String(Character(charCode: Int(Unicode.Scalar("a").value) + xIdx)))
+                                .font(.system(size: 14, weight: .medium, design: .monospaced))
+                                .foregroundColor(.black)
+                                .padding(2)
+                        }
+                    }
             }
         }
     }
