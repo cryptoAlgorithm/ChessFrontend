@@ -108,17 +108,21 @@ extension EngineHandler {
                 // Must assign to a var because reading this property removes the read data from the buffer,
                 // so subsequent calls don't get any more data
                 let data = handle.availableData
+                print(data)
                 if data.isEmpty {
+                    print("empty")
                     handle.readabilityHandler = nil
                     continuation.resume(returning: [])
                     if useGroup { self.engineIOGroup.leave() }
                     return
                 }
                 let str = String(decoding: data, as: UTF8.self)
+                print(str)
                 // Simply wrapping the actor calls with a Task probably isn't the proper
                 // way to get thread-safe code, but it appears to work fine in this situation
                 Task {
                     for chunk in str.components(separatedBy: "\n") {
+                        guard !chunk.isEmpty else { continue }
                         do {
                             if let parsed = try Self.parseResponse(chunk) { // Only append if parsed response isn't nil
                                 await payloads.add(response: parsed)

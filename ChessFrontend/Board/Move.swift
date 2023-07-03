@@ -10,7 +10,7 @@ import Foundation
 /// A struct to represent a chess move
 ///
 /// This doesn't do any validation and is simply for the storage of moves
-public struct Move {
+public struct Move: Equatable {
     /// Coordinates of the square to move from
     public let from: PieceLocation
 
@@ -21,6 +21,11 @@ public struct Move {
     public init(fromBoardIdx: Int, toBoardIdx: Int) {
         from = PieceLocation(boardIdx: fromBoardIdx)
         to = PieceLocation(boardIdx: toBoardIdx)
+    }
+
+    public init(from: PieceLocation, to: PieceLocation) {
+        self.from = from
+        self.to = to
     }
 
     public init(from str: String) throws {

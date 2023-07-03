@@ -32,9 +32,9 @@ import Foundation
 /// ```
 public struct PieceLocation {
     /// X coordinate of the piece's location (1-indexed)
-    public let x: Int
+    public var x: Int
     /// Y coordinate of the piece's location (1-indexed)
-    public let y: Int
+    public var y: Int
 
     public var boardIdx: Int {
         get {
@@ -68,6 +68,17 @@ public struct PieceLocation {
             throw EANDecodingError.corrupted
         }
         x = Int(firstAscii) - Int(Unicode.Scalar("a").value) + 1
+    }
+
+    public init(x: Int, y: Int) {
+        self.x = x
+        self.y = y
+    }
+}
+
+extension PieceLocation: Equatable {
+    public static func ==(lhs: Self, rhs: Self) -> Bool {
+        lhs.boardIdx == rhs.boardIdx
     }
 }
 

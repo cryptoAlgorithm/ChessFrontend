@@ -46,6 +46,8 @@
 		DA9881FB2923B33E000A223D /* Knob.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA9881FA2923B33E000A223D /* Knob.swift */; };
 		DA9881FD2923B535000A223D /* Int+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA9881FC2923B535000A223D /* Int+.swift */; };
 		DA9881FF2923D995000A223D /* Check.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA9881FE2923D995000A223D /* Check.swift */; };
+		DAB29B162A5192D00034F2CB /* Piece+validMoves.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAB29B152A5192D00034F2CB /* Piece+validMoves.swift */; };
+		DAB29B172A5192D00034F2CB /* Piece+validMoves.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAB29B152A5192D00034F2CB /* Piece+validMoves.swift */; };
 		DAFF6F132922440F009BE04F /* PieceArray+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAFF6F122922440F009BE04F /* PieceArray+.swift */; };
 /* End PBXBuildFile section */
 
@@ -101,6 +103,7 @@
 		DA9881FA2923B33E000A223D /* Knob.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Knob.swift; sourceTree = "<group>"; };
 		DA9881FC2923B535000A223D /* Int+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+.swift"; sourceTree = "<group>"; };
 		DA9881FE2923D995000A223D /* Check.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Check.swift; sourceTree = "<group>"; };
+		DAB29B152A5192D00034F2CB /* Piece+validMoves.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Piece+validMoves.swift"; sourceTree = "<group>"; };
 		DAFF6F122922440F009BE04F /* PieceArray+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PieceArray+.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -179,6 +182,7 @@
 				DA50B8042913CF1200FA58E4 /* BoardViewModel.swift */,
 				DAFF6F122922440F009BE04F /* PieceArray+.swift */,
 				DA50B8062913CF8E00FA58E4 /* Piece.swift */,
+				DAB29B152A5192D00034F2CB /* Piece+validMoves.swift */,
 			);
 			path = Chess;
 			sourceTree = "<group>";
@@ -395,6 +399,7 @@
 				DA6AE6C52925057B00B13F3F /* BoardBackground.swift in Sources */,
 				DA9881F4292377BF000A223D /* Binding+.swift in Sources */,
 				DA9881D6292358CD000A223D /* PlayerTurnPill.swift in Sources */,
+				DAB29B162A5192D00034F2CB /* Piece+validMoves.swift in Sources */,
 				DA50B80B2913D82100FA58E4 /* PieceView.swift in Sources */,
 				DA50B81E2917895700FA58E4 /* UCIResponse.swift in Sources */,
 				DA50B823291D378500FA58E4 /* UCIDecode.swift in Sources */,
@@ -407,6 +412,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DAB29B172A5192D00034F2CB /* Piece+validMoves.swift in Sources */,
 				DA6AE6CE292738BB00B13F3F /* EngineHandlerTests.swift in Sources */,
 				DA50B843291FAFF600FA58E4 /* PieceLocationTests.swift in Sources */,
 			);
@@ -542,12 +548,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = ChessFrontend/ChessFrontend.entitlements;
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"ChessFrontend/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = Q382QLKDG3;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -572,12 +578,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = ChessFrontend/ChessFrontend.entitlements;
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"ChessFrontend/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = Q382QLKDG3;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -602,7 +608,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = Q382QLKDG3;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.cryptoalgo.ChessFrontendTests;
@@ -619,7 +625,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = Q382QLKDG3;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.cryptoalgo.ChessFrontendTests;

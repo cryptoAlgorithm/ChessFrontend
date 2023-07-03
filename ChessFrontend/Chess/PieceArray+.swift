@@ -8,11 +8,11 @@
 import Foundation
 
 /// An alias for a board array - an array with pieces
-typealias Board = Array<Piece>
+public typealias Board = Array<Piece>
 
 public extension Array where Element == Piece {
     /// Length of each side of the board
-    static let boardSize = 8
+    static let boardSize = 8 // Why would you want anything other than 8 anyways?
 
     /// Default state of one player's pieces
     private static let defaultSetup: [PieceType] = [
@@ -48,8 +48,8 @@ public extension Array where Element == Piece {
     }
 
     /// Get the list of valid moves for a certain piece
-    func getValidMoves(for idx: Int) -> [Move] {
-        []
+    func validMoves(for idx: Int) -> ([Move], [Move]) {
+        self[idx].validMoves(at: .init(boardIdx: idx), for: self)
     }
 
     /// Construct a UCI representation of the board with the specified full and half moves
@@ -81,8 +81,13 @@ public extension Array where Element == Piece {
         return "\(fenPieces) \(currentSide.rawValue.first!.lowercased()) - - 0 \(fullMoves)"
     }
 
-    /// Load
-    mutating func load(uci: String) {
-        
+    /// Load a board from a FEN string
+    mutating func load(fen: String) {
+
+    }
+
+    // MARK: Convenience methods
+    func piece(at loc: PieceLocation) -> Piece {
+        self[loc.boardIdx]
     }
 }

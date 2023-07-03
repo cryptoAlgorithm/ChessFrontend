@@ -30,7 +30,7 @@ struct BoardBackground: View {
                             let row = idx / Board.boardSize
                             Text(String(Board.boardSize - row))
                                 .font(.system(size: 14, weight: .medium, design: .monospaced))
-                                .foregroundColor(.black)
+                                .foregroundColor(.black.opacity(0.5))
                                 .padding(2)
                         }
                     }
@@ -39,7 +39,7 @@ struct BoardBackground: View {
                             let xIdx = idx - Board.boardSize * (Board.boardSize-1)
                             Text(String(Character(charCode: Int(Unicode.Scalar("a").value) + xIdx)))
                                 .font(.system(size: 14, weight: .medium, design: .monospaced))
-                                .foregroundColor(.black)
+                                .foregroundColor(.black.opacity(0.5))
                                 .padding(2)
                         }
                     }

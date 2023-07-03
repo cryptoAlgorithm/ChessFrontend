@@ -72,7 +72,13 @@ public class BoardViewModel: ObservableObject {
 
     /// Make a move by moving a piece at an index in the board array to another position
     @MainActor public func makeMove(from: Int, to: Int) {
-        moves.append(Move(fromBoardIdx: from, toBoardIdx: to))
+        let move = Move(fromBoardIdx: from, toBoardIdx: to)
+        // Make sure this is a valid move first
+        let (validMoves, captures) = board.validMoves(for: from)
+        guard validMoves.contains(move) || captures.contains(move) else {
+            return
+        }
+        moves.append(move)
         if let removedPiece = board.move(with: moves.last!) {
             if removedPiece.side == .white { blackRemovedPieces.append(removedPiece) }
             else { whiteRemovedPieces.append(removedPiece) }
